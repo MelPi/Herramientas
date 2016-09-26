@@ -1,0 +1,217 @@
+%--------------------------------ARBOL GENEALÓGICO - PROLOG--------
+%------------------------------------------------------------------
+%                    ----------------------------------------------
+%descripcion_persona | nombre | edad |   vida    |  estado_civil   |
+%                    | ###### | #### |  vivo = v |  solero     = s |
+%                    | ###### | #### | ######### |  conyuge    = c |  
+%                    | ###### | #### | ######### |  divorciado = d |                                
+%                    ----------------------------------------------
+hombre('juan pilco',72,v,c).		
+hombre('julio pacori',79,m,c).			
+hombre('carlos pilco',44,v,d).		
+hombre('edwin machicado',45,v,p).			
+hombre('ciro machicado',40,v,p).		
+hombre('jhair machicado',10,m,s).		
+hombre('ronald machicado',15,v,s).		
+hombre('gary machicado',16,v,s).	
+hombre('sergio quiroz',61,v,c).
+hombre('miguel paredes',33,v,p).		
+hombre('miguel ignacio paredes',2,v,s).		
+hombre('fabricio nuñez',29,v,p).
+hombre('sergio paredes',1,v,s).	
+hombre('lenin pilco',30,v,c).
+mujer('pilar mora',29,v,c).
+mujer('benita velasquez',69,v,c).		
+mujer('mariana vargas',71,v,c).		
+mujer('isabel pilco',56,v,c).		
+mujer('edith machicado',41,v,d).			
+mujer('melanie pilco',20,v,s).		
+mujer('silvia quiroz',32,v,p).		
+mujer('mari quiroz',28,v,p).		
+mujer('nicole machicado',3,v,s).		
+mujer('margaret machicado',18,v,s).		
+mujer('magda velasquez',45,v,p).	
+mujer('nely rojas',43,v,p).	
+
+padres('juan pilco','carlos pilco').
+padres('juan pilco','isabel pilco').
+padres('benita velasquez','isabel pilco').
+padres('benita velasquez','carlos pilco').
+padres('julio pacori','edwin machicado').
+padres('julio pacori','edith machicado').
+padres('julio pacori','ciro machicado').
+padres('mariana vargas','edwin machicado').
+padres('mariana vargas','edith machicado').
+padres('mariana vargas','ciro machicado').
+padres('sergio quiroz','silvia quiroz').
+padres('sergio quiroz','mari quiroz').
+padres('sergio quiroz','lenin quiroz').
+padres('isabel pilco','silvia quiroz').
+padres('isabel pilco','mari quiroz').
+padres('isabel pilco','lenin quiroz').
+padres('silvia quiroz','miguel ignacio paredes').
+padres('silvia quiroz','sergio paredes').
+padres('miguel paredes','miguel ignacio paredes').
+padres('miguel paredes','sergio paredes').
+padres('carlos pilco','melanie pilco').
+padres('edith machicado','melanie pilco').
+padres('ciro machicado','margaret machicado').
+padres('ciro machicado','nicole machicado').
+padres('ciro machicado','gary machicado').
+padres('magda velasquez','margaret machicado').
+padres('magda velasquez','nicole machicado').
+padres('magda velasquez','gary machicado').
+padres('nely rojas','ronald machicado').
+padres('nely rojas','jhair machicado').
+padres('edwin machicado','ronald machicado').
+padres('edwin machicado','jhair machicado').
+%---------------------------------------------------
+%---------------------------------------------------
+%---------------------------------------------------
+papa(A,B):-hombre(A,_,_,_),padres(A,B).        		
+mama(A,B):-mujer(A,_,_,_),padres(A,B).				
+hijo(A,B):-hombre(A,_,_,_),padres(B,A).				
+hija(A,B):-mujer(A,_,_,_),padres(B,A).				
+hijos(A,B):-hijo(A,B);hija(A,B).            		
+hermano(A,B):-hombre(A,_,_,_),hombre(B,_,_,_),		
+    padres(C,A), padres(C,B),A \== B.			    
+hermana(A,B):-mujer(A,_,_,_),mujer(B,_,_,_),		
+    padres(C,A), padres(C,B), A \== B.				
+hermanos(A,B):-padres(C,A), padres(C,B),			
+    A \== B.										
+%padres_(A,B):-padres(A,B),A\==B.					
+abuelo(A,B):-hombre(A,_,_,_),padres(A,C),			
+    padres(C,B).									
+abuela(A,B):-mujer(A,_,_,_),padres(A,C),			
+    padres(C,B).									
+abuelos(A,B):-abuelo(A,B);abuela(A,B).				
+bisabuelo(A,B):-hombre(A,_,_,_),padres(A,C),		
+    abuelos(C,B).									
+bisabuela(A,B):-mujer(A,_,_,_),padres(A,C),  		
+    abuelos(C,B).									
+bisabuelos(A):-bisabuela(A,_);bisabuelo(A,_).		
+bisnietos(A,B):-bisabuelo(B,A);bisabuela(B,A).		
+nieto(A,B):-hombre(A,_,_,_),hijo(A,C),hijos(C,B).	
+nieta(A,B):-mujer(A,_,_,_),hija(A,C),hijos(C,B).	
+nietos(A,B):-nieto(A,B);nieta(A,B).					
+tio(A,B):-hombre(A,_,_,_),hermanos(A,C),			
+    padres(C,B).								    
+tia(A,B):-mujer(A,_,_,_),hermanos(A,C),padres(C,B). 
+tios(A,B):-tio(A,B);tia(A,B).						
+mayores_a_60_años(A,B):-(mujer(A,B,_,_);			
+    hombre(A,B,_,_)),B>=60.							
+menores_de_3_años(A,B):-(mujer(A,B,_,_);			
+    hombre(A,B,_,_)),B<3.							
+edad_entre_20_y_30_años(A,B):-(mujer(A,B,_,_);		
+    hombre(A,B,_,_)),B>=20,B=<30.					
+fallecidos(A):-(mujer(A,_,B,_);hombre(A,_,B,_)),	
+    B==m.											
+pareja(A,B):-padres(A,C),padres(B,C),A\==B.	  		
+casados(A):-(hombre(A,_,_,C);mujer(A,_,_,C)),C==c.  
+viudos(A):-pareja(A,C),fallecidos(C).			    
+huerfanos_de_madre(A):-mujer(C,_,_,_),hijos(A,C),	
+    fallecidos(C).									
+huerfanos_de_padre(A):-hombre(C,_,_,_),hijos(A,C),
+    fallecidos(C).								
+huerfanos(A):-hijos(A,C),fallecidos(C).			
+sobrino(A,B):-hombre(A,_,_,_),hermanos(B,C),		
+    padres(C,A).									
+sobrina(A,B):-mujer(A,_,_,_),hermanos(B,C),			
+    padres(C,A).									
+sobrinos(A,B):-sobrino(A,B);sobrina(A,B).			
+cuniada(A,B):-mujer(A,_,_,_),pareja(A,C)			
+    ,hermanos(C,B).									
+cuniado(A,B):-hombre(A,_,_,_),pareja(A,C),			
+    hermanos(C,B).									
+cuniados(A,B):-cuniado(A,B);cuniada(A,B).			
+suegro(A,B):-hombre(A,_,_,_),pareja(B,C),			
+    padres(A,C).									
+suegra(A,B):-mujer(A,_,_,_),pareja(B,C),padres(A,C).
+suegros(A,B):-suegro(A,B);suegra(A,B).				
+yerno(A,B):-hombre(A,_,_,_),padres(B,C),			
+    mujer(C,_,_,_),pareja(C,A).						
+nuera(A,B):-mujer(A,_,_,_),padres(B,C),				
+    hombre(C,_,_,_),pareja(C,A).					
+primo(A,B):-hombre(A,_,_,_),padres(C,A),padres(D,B),
+    hermanos(C,D).									
+prima(A,B):-mujer(A,_,_,_),padres(C,A),				
+    padres(D,B),hermanos(C,D).						
+primos(A,B):-primo(A,B);prima(A,B).					
+solteros(A):-(hombre(A,_,_,B);mujer(A,_,_,B)),B==s. 
+divorciados(A):-(hombre(A,_,_,B);mujer(A,_,_,B))	
+    ,B==d.																			                    	
+%-------------------------------COMO HACER LAS CONSULTAS?---------------------------------------
+%       papa(Papa,De).						     
+%		mama(Mama,De).						     
+%		hijo(Hijo,De).						     
+%		hija(Hija,De).						     
+%		hijos(Hijos,De)						     
+%		hermano(Hermano,De)					     
+%											     
+%		hermana(Hermana,De)					     
+%											     
+%		hermanos(Hermanos,De)				     
+%											     
+%											     
+%		abuelo(Abuelo,De).					     
+%											     
+%		abuela(Abuela,De).					     
+%											     
+%		abuelos(Abuelos,De).				     
+%		bisabuelo(Bisabuelo,De).			     
+%											     
+%		bisabuela(Bisabuela,De).			     
+%											     
+%		bisabuelos(Bisabuelos,De).			     
+%		bisnietos(Bisnietos,De).			     
+%		nieto(Nieto,De).					     
+%		nieta(Nieta,De).					     
+%		nietos(Nietos,De).					     
+%		tio(Tio,De).						     
+%											     
+%	    tia(Tia,De).						     
+%		tios(Tios,De).						     
+%		xmayores_a_60_años(Nombre,Edad).		     
+%											     
+%		menores_de_3_años(Nombre,Edad).		     
+%											     
+%		edad_entre_20_y_30_años(Nombre,Edad).	 
+%											     
+%		fallecidos(Nombre).					     
+%											     
+%		pareja(Pareja,De).					     
+%		casados(Estan_casados).				     
+%		viudos(Viudao).						     
+%		huerfanos_de_madre(Es_huerfano).	   
+%											     
+%		huerfanos_de_padre(Es_huerfano).	     
+%											     
+%		huerfanos_de_padre(Es_huerfano).	     
+%		sobrino(Sobrino,De).				     
+%											     
+%		sobrina(Sobrina,De).				     
+%											     
+%		sobrinos(Sobrinos,De).				     
+%		cuniada(Cuniada,De).				     
+%											     
+%		cuniado(Cuniado,De).				     
+%											     
+%		cuniados(Cuniados,De).				     
+%		suegro(Suegro,De).					     
+%											     
+%		suegra(Suegra,De).					     
+%		suegros(Suegros,De).				     
+%		yerno(Yerno,De).					     
+%												 
+%		nuera(Nuera,De).					     
+%											     
+%		primo(Primo,De).					     
+%											     
+%		prima(Prima,De).					     
+%											     
+% 	primos(Es_primo,De).				     
+%		solteros(Son_solteros).				     
+%		divorciados(Son_divorciados).		     
+%											     
+%----------------------------------------------------------------------------------------------
+%-------------------------------------------------------------------------------Por: MelPi-----
