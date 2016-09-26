@@ -1,0 +1,26 @@
+create database Prueba
+use Prueba
+
+create table trabajadores
+(
+ID varchar (12) primary key,
+Nombre varchar (30),
+DNI varchar (10) ,
+Sexo varchar (1),
+Edad varchar (2),
+Area varchar (50)
+
+);
+
+drop table trabajadores
+select * from trabajadores
+insert into trabajadores values ('201467341245','Suarez Maria', null, '0' ,'20','Administracion' );
+insert into trabajadores values ('201056987542','Guimaraes Joao', '4589621', '1' ,'35','Contabilidad' );
+insert into trabajadores values ('201198458923','Rush Jennifer', '6598521', '0' ,'22','Economia' );
+insert into trabajadores values ('201087561245','Ortiz Camila', '7325416', '0' ,'45','Economia' );
+insert into trabajadores values ('200295155487','Rodriguez Carmen', null, '0' ,'38','Administracion' );
+insert into trabajadores values ('201313976456','da Silva Zoe', '3562145', '0' ,'46','Contabilidad' );
+insert into trabajadores values ('201226592345','Pereira Ronei', '2589654', '1' ,'32','Marketing' );
+insert into trabajadores values ('201112659162','Aragon Daniel', '15826459', '1' ,'32','Produccion' );
+insert into trabajadores values ('201145269162','Mejia Geanpierre', null, '1' ,'21','Produccion' );
+insert into trabajadores values ('200395157832','Monterrey Jorge', '02154852', '1' ,'36','Marketing' );
