@@ -1,0 +1,181 @@
+create table ARTICULOS
+(
+	CODART char(6) primary key,
+	DESCRIPCION char(50),
+	UNIDAD char(3),
+	STOCK numeric(11,2),
+	PRECIO numeric(11,2),
+	MONEDA char(1),
+	FECULTMOV date,
+	ULTCANCOM numeric(11,2),
+	STOCKMIN numeric(10),
+	ALMACEN char(1)
+)
+
+create table MOVIMIENTOS
+(
+	CODPE char(8) primary key,
+	FECOPE date,
+	NUMDOC char(8),
+	ALMORI char(2),
+	CODARI char(6),
+	CANTIDAD numeric(10,2),
+	REFERENCIA char(20),
+	FLAG char(1)
+)
+
+create table ALMACEN
+(
+	CODALM char(2) primary key,
+	DESALM char(30),
+	DIRECCION char(40),
+	TELEFONO char(16)
+)
+
+
+INSERT INTO articulos(
+            codart, descripcion, unidad, stock, precio, moneda, fecultmov, 
+            ultcancom, stockmin, almacen)
+    VALUES ('11', 'Arroz ', '20', 34,5, '1','28/12/2013', 
+            23, 65,'1');
+    
+INSERT INTO articulos(
+            codart, descripcion, unidad, stock, precio, moneda, fecultmov, 
+            ultcancom, stockmin, almacen)
+    VALUES ('12', 'Avena  ', '13', 30,4, '2','28/12/2013', 
+            30, 50,'2');
+
+INSERT INTO articulos(
+            codart, descripcion, unidad, stock, precio, moneda, fecultmov, 
+            ultcancom, stockmin, almacen)
+    VALUES ('13', 'Tortillas de maíz', '04', 10,0, '7','28/12/2013', 
+            30, 50,'3');
+
+INSERT INTO articulos(
+            codart, descripcion, unidad, stock, precio, moneda, fecultmov, 
+            ultcancom, stockmin, almacen)
+    VALUES ('14', 'Pan integral ', '10', 46,3, '1','28/12/2013', 
+            13, 89,'2');
+
+INSERT INTO articulos(
+            codart, descripcion, unidad, stock, precio, moneda, fecultmov, 
+            ultcancom, stockmin, almacen)
+    VALUES ('15', 'Fideos/Pasta ', '05', 15,3, '12','28/12/2013', 
+            30, 50,'1');
+
+INSERT INTO articulos(
+            codart, descripcion, unidad, stock, precio, moneda, fecultmov, 
+            ultcancom, stockmin, almacen)
+    VALUES ('16', 'Cereales de harina ', '05', 193,3, '8','28/12/2013', 
+            30, 50'2');
+     
+
+INSERT INTO articulos(
+            codart, descripcion, unidad, stock, precio, moneda, fecultmov, 
+            ultcancom, stockmin, almacen)
+    VALUES ('17', 'integral', '05', 13,3, '4','28/12/2013', 
+            30, 50,'3');
+
+INSERT INTO articulos(
+            codart, descripcion, unidad, stock, precio, moneda, fecultmov, 
+            ultcancom, stockmin, almacen)
+    VALUES ('18', 'Buñuelos', '05', 103,3, '2','28/12/2013', 
+            30, 50,'2');
+
+*************************************************************************
+INSERT INTO almacen(
+            codalm, desalm, direccion, telefono)
+    VALUES ('001','Almacen 1', 'C.C.', '054-232343');
+
+INSERT INTO almacen(
+            codalm, desalm, direccion, telefono)
+    VALUES ('002','Almacen 2', 'Bustamante', '054-232347');
+
+INSERT INTO almacen(
+            codalm, desalm, direccion, telefono)
+    VALUES ('003','Almacen 3', 'Yanahuara', '054-232350');
+INSERT INTO almacen(
+            codalm, desalm, direccion, telefono)
+    VALUES ('004','Almacen 3', 'Cayma', '054-232345');
+
+*************************************************************************
+
+
+
+INSERT INTO movimientos(
+            codpe, fecope, numdoc, almori, codari, cantidad, referencia, 
+            flag)
+    VALUES (80,'2012-09-15' , '111111', '04','123456',10, 'movimiento diario', 
+            '2');
+
+INSERT INTO movimientos(
+            codpe, fecope, numdoc, almori, codari, cantidad, referencia, 
+            flag)
+    VALUES (81,'2012-07-15' , '111112', '04','123457',20, 'movimiento mensual', 
+            '2');
+
+INSERT INTO movimientos(
+            codpe, fecope, numdoc, almori, codari, cantidad, referencia, 
+            flag)
+    VALUES (82,'2012-06-15' , '111113', '06','123458',30, 'movimiento semanal', 
+            '1');
+
+INSERT INTO movimientos(
+            codpe, fecope, numdoc, almori, codari, cantidad, referencia, 
+            flag)
+    VALUES (83,'2012-06-15' , '111113', '04','123458',30, 'movimiento semanal', 
+            '2');
+
+INSERT INTO movimientos(
+            codpe, fecope, numdoc, almori, codari, cantidad, referencia, 
+            flag)
+    VALUES (84,'2012-06-15' , '111113', '04','123458',30, 'movimiento semanal', 
+            '2');
+
+ INSERT INTO movimientos(
+            codpe, fecope, numdoc, almori, codari, cantidad, referencia, 
+            flag)
+    VALUES (89,'2012-06-15' , '111113', '04','005891',30, 'movimiento semanal', 
+            '2');
+
+  INSERT INTO movimientos(
+            codpe, fecope, numdoc, almori, codari, cantidad, referencia, 
+            flag)
+    VALUES (88,'2012-06-15' , '111113', '04','105891',30, 'movimiento semanal', 
+            '2');
+
+  INSERT INTO movimientos(
+            codpe, fecope, numdoc, almori, codari, cantidad, referencia, 
+            flag)
+    VALUES (12,'2012-08-15' , '111113', '04','105891',10, 'movimiento mensual', 
+            '2');
+   INSERT INTO movimientos(
+            codpe, fecope, numdoc, almori, codari, cantidad, referencia, 
+            flag)
+    VALUES (13,'2012-08-15' , '111113', '04','105891',5, 'movimiento mensual', 
+            '2');
+
+select *from articulos;
+UPDATE ARTICULOS SET STOCK = STOCK - 70 WHERE CODART = '005891'
+
+SELECT ALMACEN, COUNT (*) FROM ARTICULOS GROUP BY ALMACEN
+
+SELECT CODART, DESCRIPCION FROM ARTICULOS 
+WHERE STOCK <= STOCKMIN
+
+SELECT * FROM MOVIMIENTOS WHERE ALMORI = '04' AND FLAG = '2' ORDER BY FECOPE
+
+
+SELECT CODART, DESCRIPCION, STOCK from articulos ORDER BY fecultmov;
+
+
+select DESCRIPCION, unidad,desalm, direccion, telefono from articulos, almacen where almacen= codalm;
+
+
+select fecope, almori, cantidad, referencia,descripcion from movimientos, articulos  where codart = codari order by cantidad;
+
+
+Select fecope, descripcion, unidad, cantidad, flag, desalm from articulos, movimientos, almacen where almacen= codalm and codart = codari order by fecope;
+
+
+select FECULTMOV,DESCRIPCION, COUNT(*) from articulos group by FECULTMOV,DESCRIPCION
