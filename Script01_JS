@@ -1,0 +1,10 @@
+<html>
+
+<head><title>hello world</title></head>
+<body>
+<script type="text/javascript">document.write(hello world)</script>
+<nosript>
+	you borwser doesn't support or has disabled javascript
+	</noscript>
+</body>
+</html>
