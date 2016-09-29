@@ -1,0 +1,230 @@
+<html>
+<head>
+<title>INSCRIPCION DE USUARIO</title>
+<form action="Data.php" method="post">
+<table style="text-align: left;width: 100%"; cellpadding="3" rules="rows"></table>
+<center>
+	<h3>FORMULARIO DE INSCRIPCION DE USUARIOS</h3>
+	<table style="text-align: left;width: 100%"; cellpadding="3" rules="rows">
+		<tbody>
+		    <tr>
+			<td>Nombre Completo:</td>
+			<td><input type="text" name="nombre" id="nombre" /></td>  </tr>
+		    <tr>
+			<td>Direccion:</td>
+			<td><textarea rows="5" name="direccion" id="direccion" cols="28"></textarea></td>  </tr>
+		    <tr>
+			<td>Correo Electronico:</td>
+			<td><input type="text" name="correo" id="correo" /></td>  </tr>
+		    <tr>
+		    <td>Contrase&ntilde;a:</td>
+		    <td><input type="password" name="contra" id="contra" /></td>  </tr>
+		    <tr>
+		    <td>Confirmar Contrase&ntilde;a:</td>
+		    <td><input type="password" name="confcon" id="confcon" /></td>  </tr>
+		    <tr>
+		    <td>Fecha de nacimiento</td> 
+		    <td><select size="1" name="meses">
+				<option value="enero">enero</option>
+				<option value="febrero">febrero</option>
+				<option value="marzo">marzo</option>
+				<option value="abril">abril</option>
+				<option value="mayo">mayo</option>
+				<option value="junio">junio</option>
+				<option value="julio">julio</option>
+				<option value="agosto">agosto</option>
+				<option value="setiembre">setiembre</option>
+				<option value="octubre">octubre</option>
+				<option value="noviembre">noviembre</option>
+				<option value="diciembre">diciembre</option></select>
+				<select size="1" name="dias">
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">4</option>
+				<option value="5">5</option>
+				<option value="6">6</option>
+				<option value="7">7</option>
+				<option value="8">8</option>
+				<option value="9">9</option>
+				<option value="10">10</option>
+				<option value="11">11</option>
+				<option value="12">12</option>
+				<option value="13">13</option>
+				<option value="14">14</option>
+				<option value="15">15</option>
+				<option value="16">16</option>
+				<option value="17">17</option>
+				<option value="18">18</option>
+				<option value="19">19</option>
+				<option value="20">20</option>
+				<option value="21">21</option>
+				<option value="22">22</option>
+				<option value="23">23</option>
+				<option value="24">24</option>
+				<option value="25">25</option>
+				<option value="26">26</option>
+				<option value="27">27</option>
+				<option value="28">28</option>
+				<option value="29">29</option>
+				<option value="30">30</option>
+				<option value="31">31</option></select>
+				<input type="text" name="anio" id="anio" />(yyyy)</td>  </tr>
+			<tr>
+			<td>SEXO:</td>
+			<td><label><input type="radio" name="sexo" value="HOMBRE" />HOMBRE</label>
+				<label><input type="radio" name="sexo" value="MUJER" />MUJER</label> </td>  </tr>
+			<tr>
+			<td>Por favor, elige los temas de interes</td>
+			<td><label><input type="checkbox" name="ficcion" value="ficcion" />Ficci&oacute;n</label>
+				<label><input type="checkbox" name="terror" value="terror" />Terror</label><BR>
+				<label><input type="checkbox" name="accion" value="accion" />Accion</label>
+				<label><input type="checkbox" name="comedia" value="comedia" id="comedia" />Comedia</label><BR>
+				<label><input type="checkbox" name="suspenso" value="suspenso" id="suspenso" />Suspenso</label></td>  </tr>
+			<tr>
+			<td>Selecciona tus aficiones:</td>
+			<td><select size="1" name="aficiones">
+				<option value="Deportes-aire">Deportes-aire-libre</option>
+				<option value="basquetball">Basquetball</option>
+				<option value="fotografia">Fotografia</option>
+				<option value="Musica-Pop">Musica-Pop</option></select></td> </tr>
+	    </tbody>
+	</table>
+	<input type="submit" name="registrar" id="registrar" value="REGISTRAR" /><br>;
+	
+</center>
+</head>
+</html>
+
+/*****************************************************************************************************************/
+<?php
+	$accesos=1;
+	if(isset($_COOKIE['num_accesos']))
+	{
+		$accesos=$_COOKIE['num_accesos']+1;
+	}
+	setcookie("num_accesos",$accesos,time()+60);
+?>
+
+<html>
+<head>
+<title> DATOS DEL USUARIO</title>
+</head>
+<center>
+	<h3>PAGINA DE CONFIRMACION DEL REGISTRO DE USUARIO</h3>
+	<table style="text-align: left;width: 100%"; cellpadding="3" rules="rows">
+		<tbody>
+			<tr>
+			<td>Nombres Completos:</td>
+			<td>
+			<?php
+				if ($_POST['nombre']!="") {
+					echo $_POST['nombre'];
+				}
+				else
+				{
+					echo "No ingreso nombre";
+				}
+				
+			?>  <BR></td>  </tr>
+			<tr>
+			<td>Direccion:</td>
+			<td>
+			<?php
+				if($_POST['direccion']!="")
+				{
+					echo nl2br($_POST['direccion']);
+				}					
+				else
+				{
+					echo "No ingreso direccion";
+				}
+			?>
+			<br></td></tr>
+			<tr>
+			<td>Correo Electronico:</td>
+			<td>
+			<?php
+				if($_POST['correo']!="")
+				{
+					echo $_POST['correo'];
+				}	
+				else
+				{
+					echo "No ingresaste correo electronico";
+				}
+					
+			?>
+			</td></tr><br>
+			<tr>
+			<td>Contraseña:</td>
+			<td><?php
+				if($_POST['contra']==$_POST['contra'])
+				{
+					echo $_POST['contra'];
+				}	
+				else
+				{
+					echo "Las contraseñas NO COINCIDEN!";
+				}
+			?><br></td></tr>
+			<tr>
+			<td>Fecha de nacimiento:</td>
+			<td>
+			<?php
+				if($_POST['anio']!="")
+				{
+					echo $_POST['meses']." ".$_POST['dias']." ".$_POST['anio'];
+				}	
+				else
+				{
+					echo "No ingresaste fecha nacimiento";
+
+				}
+					
+			?></td></tr><br>
+			<tr>
+			<td>Sexo:</td>
+			<td>
+			<?php
+				echo $_POST['sexo'];
+			?></td></tr><br>
+			<tr>
+			<td>Intereses:</td>
+			<td>
+			<?php
+				if(isset($_POST['ficcion']))	
+					echo "te gusta ".$_POST['ficcion']."<br>";
+				if(isset($_POST['terror']))	
+					echo "te gusta ".$_POST['terror']."<br>";
+				if(isset($_POST['accion']))	
+					echo "te gusta ".$_POST['accion']."<br>";
+				if(isset($_POST['suspenso']))	
+					echo "te gusta ".$_POST['suspenso']."<br>";
+				if(isset($_POST['comedia']))	
+					echo "te gusta ".$_POST['comedia']."<br>";
+				
+			
+			?></td></tr><br>
+			<tr>
+			<td>Tus aficiones:</td>
+			<td>
+			<?php
+				echo $_POST['aficiones'];
+			?></td></tr><br>
+		</tbody>
+	</table>
+	<tr>
+		<td><a href="Form.html">CONFIRMAR REGISTRO</a><br></td>
+		<td><a href="Form.html">REGRESAR</a><br></td>
+	</tr>
+	<?php
+	if($accesos>1)
+		echo "accesos a esta pagina <B>$accesos</B> veces"."<br>";
+	else
+		echo "Es la primera vez que accedes a esta pagina"."<br>";
+	?>
+	<BR><BR>MelPi<BR>
+</center>
+
+</html>
