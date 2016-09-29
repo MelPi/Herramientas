@@ -1,0 +1,24 @@
+<html>
+
+<head><title>JavaScript</title>
+<meta charset="utf-8">
+<script type="text/javascript">
+	function mostrarmensaje1 () {
+		// body...
+		alert('Bienvenido a javascript');
+	}
+	function mostrarmensaje2 () {
+		// body...
+		alert('Ha hecho clock sobre el parrafo inferior');
+	}
+</script>
+
+</head>
+<body>
+<div>
+<p> aaqui un parrafo de texto situado antes de la imagen dentro de un div contenedor </p>
+<img onclick="mostrarmensaje1()" src="http://i.imgur.com/afC0L.jpg" alt="Notepad++" title="Editor Notepad++">
+<p onclick="mostrarmensaje2()">aqui otro parrafo de texxto .java script es un lenguaje utilizado para dotar de efectos dinamicos</p>
+</div>
+</body>
+</html>
