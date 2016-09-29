@@ -1,0 +1,54 @@
+#include <IRremote.h>
+
+const int RECV_PIN = 2;
+int Led1=8;
+int Led2=9;
+int buzzer=10;
+
+IRrecv irrecv(RECV_PIN);
+
+decode_results results;
+
+void setup()
+{
+  Serial.begin(9600);
+  irrecv.enableIRIn(); 
+  pinMode(Led1,OUTPUT);
+  pinMode(Led2,OUTPUT);
+  pinMode(buzzer,OUTPUT);
+}
+
+void loop() {
+  if (irrecv.decode(&results)) 
+  {
+       switch (results.value)
+       {
+            case 0xFD08F7: //codigo boton1
+            digitalWrite(Led1, HIGH);//Encender Led1                   
+            break;
+
+            case 0xFD8877: //codigo boton2
+            digitalWrite(Led2, HIGH);//Encender Led2                   
+            break;
+            
+            case 0xFD48B7: //codigo boton3
+            digitalWrite(buzzer, HIGH);//Encender Led3                   
+            break;
+            
+            case 0xFD28D7://codigo boton4
+            digitalWrite(Led1, LOW);//Apagar Led1                   
+            break;
+            
+            case 0xFDA857://codigo boton5
+            digitalWrite(Led2, LOW);//Apagar Led2
+            break;            
+            
+            case 0xFD6897://codigo boton6
+            {digitalWrite(buzzer, LOW);//Apagar Led3
+            delay(500);            
+            break;
+            }
+       }
+    irrecv.resume(); 
+  }
+}
