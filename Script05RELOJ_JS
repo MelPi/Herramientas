@@ -1,0 +1,33 @@
+<html>
+
+<head><title>reloj regresivo</title>
+
+</head>
+<body>
+<h2>horas para acabar el dia:</h2>
+<FORM name="reloj">
+<input type="text" size="7" name="tiempo" value="mm:hh:ss" title="tiempo restante para finalizar el dia">
+
+<script language="javascript">
+var tiempoatras;
+updatereloj();
+function updatereloj () {
+	// body...
+	var tiempo= new Date();
+	var hora=23-tiempo.getHours();
+	var minutos=59-tiempo.getMinutes();
+	var segundos=59-tiempo.getSeconds();
+	tiempoatras=(hora<10)? hora:hora;
+	tiempoatras+=((minutos<10)?":0":":")+minutos;
+	tiempoatras+=((segundos<10)? ":0":":")+segundos;
+
+	document.reloj.tiempo.value=tiempoatras;
+	setTimeout("updatereloj()",1000);
+
+}
+</script>
+</FORM>
+
+<!-- codigo de la pagina-->
+</body>
+</html>
