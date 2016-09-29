@@ -1,0 +1,181 @@
+#include <SoftwareSerial.h>
+#include <Servo.h> 
+#include "DHT.h"
+/*
+#define TxD 1 //pin Blutetooth
+#define RxD 0 //pin BLuetooth
+*/
+          /*
+           * PINES UTILIZADOS:
+           DIGITALES:
+           * 0  RxD 0 pin BLuetooth
+           * 1  TxD 1 pin Blutetooth
+           * 2
+           * 3
+           * 4
+           * 5
+           * 6
+           * 7  DHT-11 rangos: temperatura: 0 a 50 °C  humedad: 20% a 90% RH.
+           * 8  buzzer
+           * 9  servo
+           *10  led azul
+           *11  led amarillo
+           *12  led verde
+           *13  led rojo
+           ANALOGICOS:
+           *
+           *A0 LM35 temperatura
+           *A1
+           *A2 higrometro HL69 (1023-totalmente mojado  " mas humedad menos valor")
+           *A3
+            */
+
+/**************SERVO******************/
+Servo myservo; 
+int pos = 0;    // variable de inicializacion del servo
+/****************TEMPERATURA LM35****************/
+int valorT;
+int vartemp;//Se crea variable para almacenar datos de sensor temperatura
+/***************HIGROMETRO*****************/
+int varhum;// Se crea variable para almacenar datos de sensor de humedad
+int varauxtemp;// Se crea variable para almacenar datos de sensor temperatura
+int humval;//almacenara el valor de la humedad
+//SoftwareSerial Blue(TxD,RxD);
+/**************HUMEDAD DHT11******************/
+#define DHTpin 7 //utilizar pin 7 
+#define DHTtype DHT11
+DHT dht(DHTpin,DHTtype);
+int h;
+int t;
+
+
+void setup(){
+ // Blue.begin(9600);
+ /*************NOTIFICACION-HIGROMETRO*******************/
+  pinMode(13, OUTPUT);//led ROJO
+  pinMode(12, OUTPUT);//led VERDE
+//pinMode(8,OUTPUT);//Buzzer
+ /*************NOTIFICACION-DHT11*******************/
+  pinMode(10, OUTPUT);//led AZUL
+  pinMode(11, OUTPUT);//led AMAARILLO
+
+  pinMode(A2,INPUT);
+  pinMode(A0,INPUT);
+  myservo.attach(9); 
+  dht.begin();
+  Serial.begin(9600);
+
+}
+void loop(){
+
+
+ h=dht.readHumidity();//lee humedad 
+ t=ht.readTemperature();//lee temperaruta
+  
+  valorT = analogRead(A0);
+  valorT = (500*valorT)/1024;  //Convierte valor análogo de temperatura a grados Celsius
+
+  humval= analogRead(A2);   //pin análogo 2 para entrada de sensor humedad (higrometro)
+  
+  Serial.println(valorT);
+    
+  //LM35 Tempreratura
+  Serial.print("T:");   //Se escribe la letra “T”
+  Serial.print(valorT);  //Se el valor de temperatura
+  Serial.print("C \n"); //Se escribe la letra “C”
+  
+  // HIGROMETRO humedad de tierra
+  
+  Serial.print("H:");//Se escribe la letra “H”
+  Serial.print(humval);//Se escribe el valor de humedad de tierra
+  delay(1000);
+ Serial.print("\n");
+ /* char comando = Blue.read();
+  switch(comando){
+    
+      case 's':
+        Blue.println(valorT);
+        delay(1000);
+        break;
+              */
+        //la acción de riego respecto del sensor de humedad de tierra
+        
+        if(humval<300) {//Si el valor análogo de humedad es menor a 300
+        
+        Serial.print("Suelo: Seco"); //Se escribe "suelo seco"
+         Serial.print("\n");
+        digitalWrite(13, HIGH);  //se enciende led rojo como alerta
+        delay(500);
+        digitalWrite(12, LOW); //led verde se mantiene apagado
+        delay(500);
+         // servomotor se mueve 180 dejando salir el agua
+         for(pos = 0; pos <= 180; pos =pos+5)
+          {                                
+            myservo.write(pos);             
+            delay(15);                   
+          } 
+
+        }
+        
+        //Si no es asi, si la humedad es mayor o igual a 300 y si es menor a 700
+        
+        if(humval>=300 && humval<700){
+        
+        Serial.print("Suelo: Mojado");//Se escribe suelo humedo
+         Serial.print("\n");
+        digitalWrite(13, HIGH);  //se enciende led rojo  se mantiene apagado
+        delay(500);
+        digitalWrite(12, LOW);  //enciende led verde indicando que todo esta OK  
+        delay(500);
+        
+        //servomotor gira 180 grados para cerrar valvula 
+        for(pos = 180; pos>=0; pos=pos-5)     // regresa la posicion al servo
+        {                                
+          myservo.write(pos);            
+          delay(15);            
+        } 
+
+        }
+        
+        //Si no se cumple ninguna de las condiciones anteriores
+        
+        if(humval>700){
+        
+        Serial.print("Suelo: Humedo");
+         Serial.print("\n");
+        digitalWrite(13, LOW);//prende led rojo señal de exceso de agua alerta
+        delay(500);
+        digitalWrite(12, HIGH);  // led se mantiene apagado
+        delay(500);
+        //activa buzzer
+        //while(humval>700){
+        // analogWrite(8,128); //emite sonido de alarma
+         //delay(500); //espera medio segundo
+         // }
+
+         digitalWrite(11, LOW); //deja de emitir sonido
+         delay(500);//espera medio segundo
+
+        }
+        
+        delay(1000);//Se espera un tiempo de 1000 milisegundos
+
+/*  }*/
+
+//////////////////////////////////////////////////Humedad
+Serial.print("Humedad Relativa: ");                 
+Serial.print(h);//Escribe la humedad
+Serial.println(" %");                     
+delay (2500);
+///////////////////////////////////////////////////Temperatura              
+Serial.print("Temperatura: ");                  
+Serial.print(t);//Escribe la temperatura
+Serial.println(" C'");                   
+delay (2500);
+Serial.println ();
+
+}
+
+
+
+ 
