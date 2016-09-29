@@ -1,0 +1,104 @@
+#include<stdio.h>
+#include<pthread.h>
+#include<stdlib.h>
+#include<unistd.h>
+#include<sys/ipc.h>
+#include<sys/sem.h>
+#include<semaphore.h>
+pthread_mutex_t sema1,sema2,sema3,sema4;
+
+void *funcion01(void *arg)//2
+{
+	while(1)
+	{
+		pthread_mutex_lock(&sema2);
+		int i;
+	
+		for(i=0;i<20;i++)
+		{
+			printf(".");
+			fflush(stdout);		
+		
+
+		}
+		pthread_mutex_unlock(&sema3);
+	}
+	return NULL;
+}
+void *funcion02(void *arg)
+{
+	while(1)
+	{
+		int i;
+		pthread_mutex_lock(&sema3);
+		for(i=0;i<20;i++)
+		{
+			printf("o");
+			fflush(stdout);
+		
+		}
+		pthread_mutex_unlock(&sema4);
+	}
+	return NULL;
+}
+void *funcion03(void *arg)
+{
+	
+	while(1)
+	{
+		int i;
+		pthread_mutex_lock(&sema4);
+		for(i=0;i<20;i++)
+		{
+			printf("+");
+			fflush(stdout);
+		
+		}
+		pthread_mutex_unlock(&sema1);
+	}
+	return NULL;
+}
+
+
+main()
+{
+	pthread_t mihilo01,mihilo02,mihilo03;
+	pthread_mutex_init(&sema1,NULL);//x
+	pthread_mutex_init(&sema2,NULL);
+	pthread_mutex_init(&sema3,NULL);
+	pthread_mutex_init(&sema4,NULL);
+	int i;
+	pthread_mutex_lock(&sema2);
+	pthread_mutex_lock(&sema3);
+	pthread_mutex_lock(&sema4);
+	
+	if(pthread_create(&mihilo01,NULL,funcion01,NULL))
+	{
+		printf("Error creando el hilo.");
+		abort();
+	}
+
+	if(pthread_create(&mihilo02,NULL,funcion02,NULL))
+	{
+		printf("Error creando el hilo.");
+		abort();
+	}
+	if(pthread_create(&mihilo03,NULL,funcion03,NULL))
+	{
+		printf("Error creando el hilo.");
+		abort();
+	}
+	while(1)
+	{
+		pthread_mutex_lock(&sema1);
+		for(i=0;i<20;i++)
+		{
+			printf("x");
+			fflush(stdout);
+			
+		}
+		pthread_mutex_unlock(&sema2);
+		
+	}
+	exit(0);
+}
