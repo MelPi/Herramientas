@@ -1,0 +1,36 @@
+<html>
+
+<head><title>libro de visitas</title>
+
+
+</head>
+<body>
+
+<h2>libro de visitas</h2>
+<FORM action="mailto:MelPi@gmail.com" method="post">
+	<table>
+		<tr>
+			<td align=left>nombre:</td>
+			<td><input type="text" size=36 name="nombre"></td>
+		</tr>
+		<tr>
+			<td  align=left>Direccion E-mail:</td>
+			<td><input type="txt" size=36 name="direccion"></td>
+		</tr>	
+		<tr>
+			<td align=left>quien te recomendo esta pagina:</td>
+			<td><input type="txt" size=36 name="procedencia"></td>
+		</tr>	
+		<tr>
+			<td align=left>comentarios:</td>
+			<td><textarea row=5 cols=30 name="comentarios"></textarea></td>
+		</tr>	
+	</table>
+<input type="reset" value="borrar" >
+<input type="submit" value ="enviar">
+
+
+</FORM>
+
+</body>
+</html>
