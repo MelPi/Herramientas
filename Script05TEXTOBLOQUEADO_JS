@@ -1,0 +1,25 @@
+<html>
+
+<head><title>texto bloqueado</title>
+
+<script language="javascript">
+	function disableselect (e) {
+		// body...
+		return false;
+	}
+	function reenable () {
+		// body...
+		return true;
+	}
+	document.onselectstart=new Function("return false")
+	if (window.sidebar) {
+		document.onmousedown=disableselect
+		document.onclick=reenable
+
+	}
+</script>
+</head>
+<body>
+si sintentas copiar este texto no te voy a dejar!
+</body>
+</html>
