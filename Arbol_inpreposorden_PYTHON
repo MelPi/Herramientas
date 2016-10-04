@@ -1,0 +1,54 @@
+class Arbol:
+	def __init__(self,datos,izquierda=None,derecha=None):
+		self.datos=datos
+		self.izquierda=izquierda
+		self.derecha=derecha
+		
+	def __str__(self):
+		return str(self.datos)
+
+def mostrarArbolPreorder(arbol):#r,i,d
+        if arbol==None: return
+        print(arbol.datos,end=" ")
+        mostrarArbolPreorder(arbol.izquierda)
+        mostrarArbolPreorder(arbol.derecha)
+
+def mostrarArbolPostorder(arbol):#i,d,r
+        if arbol==None: return
+        mostrarArbolPostorder(arbol.izquierda)
+        mostrarArbolPostorder(arbol.derecha)
+        print(arbol.datos,end=" ")
+
+def mostrarArbolInorder(arbol):#i,r,d
+        if arbol==None: return
+        mostrarArbolInorder(arbol.izquierda)
+        print(arbol.datos, end=" ")
+        mostrarArbolInorder(arbol.derecha)
+
+
+def inorden(arbol):
+    if(arbol==None):
+        return []
+    else:
+        return inorden(arbol.izquierda)+[str(arbol.datos)]+inorden(arbol.derecha)
+
+
+def preorden(arbol):
+    if(arbol==None):
+        return []
+    else:
+        return [str(arbol.datos)]+preorden(arbol.izquierda)+ preorden(arbol.derecha)
+
+
+def postorden(arbol):
+    if(arbol==None):
+        return []
+    else:
+        return postorden(arbol.izquierda)+ postorden(arbol.derecha)+[str(arbol.datos)]
+        
+        
+        
+/***╔══╦═╦╗╔═╦╗****╔══╦═╦╗╔═╦╗****╔══╦═╦╗╔═╦╗****╔══╦═╦╗╔═╦╗****╔══╦═╦╗╔═╦╗****╔══╦═╦╗╔═╦╗****╔══╦═╦╗╔═╦╗****╔══╦═╦╗╔═╦╗****╔══╦═╦╗╔═╦╗***/
+/***║║║║╦╣╚╣╔╣║****║║║║╦╣╚╣╔╣║****║║║║╦╣╚╣╔╣║****║║║║╦╣╚╣╔╣║****║║║║╦╣╚╣╔╣║****║║║║╦╣╚╣╔╣║****║║║║╦╣╚╣╔╣║****║║║║╦╣╚╣╔╣║****║║║║╦╣╚╣╔╣║***/
+/***╚╩╩╩═╩═╩╝╚╝****╚╩╩╩═╩═╩╝╚╝****╚╩╩╩═╩═╩╝╚╝****╚╩╩╩═╩═╩╝╚╝****╚╩╩╩═╩═╩╝╚╝****╚╩╩╩═╩═╩╝╚╝****╚╩╩╩═╩═╩╝╚╝****╚╩╩╩═╩═╩╝╚╝****╚╩╩╩═╩═╩╝╚╝***/
+
