@@ -1,0 +1,29 @@
+<?php
+	$accesos=1;
+	if(isset($_COOKIE['num_accesos']))
+	{
+		$accesos=$_COOKIE['num_accesos']+1;
+	}
+	setcookie("num_accesos",$accesos,time()+3600);
+
+?>
+
+<HTML>
+<HEAD> <TITLE>Trabajando con Cookies</TITLE>
+</HEAD>
+<BODY>
+<CENTER>
+	<H2>Trabajando con Cookies</H2>
+	<H3>Contador de accesos</H3>
+	<?php
+	if($accesos<1)
+		echo"Has accedido a esta pagina <B>$accesos</B> veces";
+	else
+		echo "Es la primera vez que accedes a esta pagina";
+	?>
+	<BR><BR><BR>
+	<A HREF="cookies1.php">Actualiza</A> |
+	<A HREF = "cookies2.php">Eliminar</A>
+</CENTER>
+</BODY>
+<HTML>
