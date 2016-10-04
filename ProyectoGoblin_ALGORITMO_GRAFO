@@ -1,0 +1,609 @@
+********************Grafo.h********************************************************************************************************
+#ifndef GRAFO_H
+#define GRAFO_H
+
+#include<iostream>
+#include<vector>
+#include <stack>
+#include "list.h"
+
+using namespace std;
+
+template<class E>class CGrafo;
+template<class E>class CArista;
+template<class E>class CVertice
+{
+private:
+	E data;
+	int refSecVertices;
+	vector<CArista<E>*>*secIncident;
+	int pesoVert;
+	bool perm;
+	CVertice<E>* path;
+public:
+	CVertice(E data,int pos)
+	{
+		this->data=data;
+		refSecVertices=pos;
+		secIncident = new vector<CArista<E>*>;
+		path=0;
+		perm = false;
+		pesoVert=9999999;
+	}
+	E getData()	{	return data;	}
+	vector<CArista<E>*>* getSecIncident()
+	{
+		return secIncident;
+	}
+	int getrefSecVertices()
+	{
+		return refSecVertices;
+	}
+
+	void vertOrigen(){ this->pesoVert=0;}
+	void darPeso(int p,int q){ pesoVert=p+q;}
+	int getPeso(){return this->pesoVert;}
+	bool getPerm(){return perm;}
+	friend class CArista<E>;
+	friend class CGrafo<E>;
+
+	CVertice<E>* menorIncidentPesos()
+	{
+		CVertice<E>* menor=0;
+
+
+
+		for(int i=0;i<secIncident->size();i++)
+		{
+			
+			//if(secIncident->at(i)->getRefDestino())
+
+
+			if(secIncident->at(i)->getRefDestino()->getPeso()  >  secIncident->at(i)->getRefOrigen()->getPeso()+secIncident->at(i)->getPeso())
+			{
+				secIncident->at(i)->getRefDestino()->darPeso(secIncident->at(i)->getPeso(),secIncident->at(i)->getRefOrigen()->getPeso());
+				secIncident->at(i)->getRefDestino()->path=secIncident->at(i)->getRefOrigen();
+			}
+
+			if(!menor || menor->getPeso() > secIncident->at(i)->getRefDestino()->getPeso()  )
+			{
+				if(!secIncident->at(i)->getRefDestino()->perm)
+					menor = secIncident->at(i)->getRefDestino();
+			}
+			
+
+		}
+		
+		return menor;
+	}
+
+	CVertice<E>* menorIncidentPesosPerm(CVertice<E>* destino)
+	{
+		CVertice<E>* menor=0;
+		for(int i=0;i<secIncident->size();i++)
+		{
+			if(!secIncident->at(i)->getRefDestino()->getPerm() )//|| secIncident->at(i)->getRefDestino()->getData()==destino->getData())
+			{
+				if(secIncident->at(i)->getRefDestino()->getPeso()  >  secIncident->at(i)->getRefOrigen()->getPeso()+secIncident->at(i)->getPeso())
+				{
+					secIncident->at(i)->getRefDestino()->darPeso(secIncident->at(i)->getPeso(),secIncident->at(i)->getRefOrigen()->getPeso());
+					secIncident->at(i)->getRefDestino()->path=secIncident->at(i)->getRefOrigen();
+				}
+
+				if(!menor || menor->getPeso() > secIncident->at(i)->getRefDestino()->getPeso()  )
+				{
+					if(!secIncident->at(i)->getRefDestino()->perm)//|| secIncident->at(i)->getRefDestino()->getData()==destino->getData())
+						menor = secIncident->at(i)->getRefDestino();
+				}
+			}
+			if (secIncident->at(i)->getRefDestino()->getData() == destino->getData())
+				secIncident->at(i)->getRefDestino()->perm = false;
+		}
+		/*if (menor->getData() == destino->getData())
+			menor->perm = false;*/
+		return menor;
+	}
+	void mostrarRuta()
+	{
+
+		CVertice<E> *aux;
+
+		cout<<"La distancia minima es: "<<this->getPeso()<<endl;
+		cout<<this->data<<" <-- ";
+		aux=this->path;
+		while(aux)
+		{
+			cout<<aux->data<<"<--";
+			aux=aux->path;
+		}
+		cout<<endl;
+	}
+
+};
+template<class E>class CArista
+{
+private:
+	CVertice<E>* refOrigen;
+	CVertice<E>* refDestino;
+	int refSecAristas;
+	int pesoAris;
+	vector<CArista<E>*>*refSecIncOrigen;
+	vector<CArista<E>*>*refSecIncDestino;
+public:
+	CArista(CVertice<E>* vertOrigen,CVertice<E>* vertDestino,int pos)
+	{
+		refOrigen=vertOrigen;
+		refDestino=vertDestino;
+		refSecAristas=pos;
+		refSecIncOrigen=vertOrigen->getSecIncident();
+		refSecIncDestino=vertDestino->getSecIncident();
+	}
+
+	int getPeso(){return pesoAris;}
+	CVertice<E>* getRefOrigen()
+	{
+		return refOrigen;
+	}
+	CVertice<E>* getRefDestino()
+	{
+		return refDestino;
+	}
+	vector<CArista<E>*>* getRefSecIncidentOrigen()
+	{
+		return refSecIncOrigen;
+	}
+	vector<CArista<E>*>* getRefSecIncidentDestino()
+	{
+		return refSecIncDestino;
+	}
+	void darPeso(int peso){ pesoAris = peso; }
+
+	friend class CGrafo<E>;
+
+};
+template<class E>class CGrafo
+{
+private:
+	vector<CVertice<E>*>* secVertices;
+	vector<CArista<E>*>* secAristas;
+public:
+	CGrafo();
+	void insertVertice(E);
+	void insertArista(E,E,int);
+	void removeVertice(E);
+	void removeArista(E,E);
+	CVertice<E>* findVertice(E);
+	CArista<E>* findArista(CVertice<E>*,CVertice<E>*);
+	void rutaMin(E,E);
+	friend ostream& operator << <>(ostream& o,CGrafo<E> &g)
+	{	
+		for(int i=0;i<g.secVertices->size();i++)	
+		{
+			o<<g.secVertices->at(i)->getData()<<endl;
+			vector<CArista<E>*>* temp=g.secVertices->at(i)->getSecIncident();
+			for(int j=0;j<temp->size();j++)
+			{
+				o<<temp->at(j)->getRefDestino()->getData()<< "("<<temp->at(j)->getPeso()<<" ) ";
+			}
+			o<<endl;
+		}
+		o<<endl;
+		return o;
+	}
+
+	void menos_vertices(E,E);
+
+	int* cambiarPesos(vector<CArista<E>*>* aristas);
+
+	void devolverPesos(int*);
+	
+};
+
+template<class E>CGrafo<E>::CGrafo()
+{
+	secVertices= new vector<CVertice<E>*>;
+	secAristas= new vector<CArista<E>*>;
+}
+
+template<class E>void CGrafo<E>::removeVertice(E vert)
+{
+	CVertice<E>* ptrVert= findVertice(vert);
+	if(ptrVert)
+	{
+		
+		secVertices->erase(secVertices->begin()+ptrVert->getrefSecVertices());
+	}
+	else
+	{
+		cout<<"No se encontro el vertice"<<endl;
+	}
+}
+template<class E>void CGrafo<E>::removeArista(E vertOrigen,E vertDestino)
+{
+	CVertice<E>*ptrOrigen = findVertice(vertOrigen);
+	CVertice<E>*ptrDestino = findVertice(vertDestino);
+
+	CArista<E>* ptrArista = findArista(ptrOrigen, ptrDestino);
+
+	if(ptrArista)
+	{
+		secAristas->erase(secAristas->begin()+ptrArista->refSecAristas);
+	}
+	else
+	{
+		cout<<"No se encontro la arista"<<endl;
+	}
+}
+
+template<class E>void CGrafo<E>::insertVertice(E vert)
+{
+	CVertice<E>* ptrVert= findVertice(vert);
+	if(ptrVert)
+	{
+		cout<<"Vertice ya existe"<<endl;
+		return;
+	}
+	ptrVert = new CVertice<E>(vert,secVertices->size());
+	secVertices->push_back(ptrVert);
+}
+template<class E>CVertice<E>* CGrafo<E>::findVertice(E vert)
+{
+	for(int i=0;i< secVertices->size();i++)
+		if(secVertices->at(i)->getData()==vert)
+			return secVertices->at(i);
+	return 0;
+}
+template<class E>void CGrafo<E>::insertArista(E vertOrigen,E vertDestino,int peso)
+{
+	CVertice<E>*ptrOrigen = findVertice(vertOrigen);
+	CVertice<E>*ptrDestino = findVertice(vertDestino);
+	if(!ptrOrigen || !ptrDestino)
+	{
+		cout<<"Vertices origen o destino duplicados"<<endl;
+		return;
+	}
+	CArista<E>* ptrArista = findArista(ptrOrigen, ptrDestino);
+	
+	if(ptrArista)
+	{
+		cout<<"Arista ya existe"<<endl;
+		return;
+	}
+	ptrArista = new CArista<E>(ptrOrigen,ptrDestino,secAristas->size());
+	ptrArista->pesoAris=peso;
+	secAristas->push_back(ptrArista);
+	ptrArista->getRefSecIncidentOrigen()->push_back(ptrArista);
+	//ptrArista->getRefSecIncidentDestino()->push_back(ptrArista);
+}
+template<class E>CArista<E>* CGrafo<E>::findArista(CVertice<E>* vertOrigen,CVertice<E>* vertDestino)
+{
+	vector<CArista<E>*>*tmpIncident = vertOrigen->getSecIncident();
+
+	for(int i=0;i< tmpIncident->size();i++)
+		if((tmpIncident->at(i)->getRefDestino() == vertDestino))// || (tmpIncident->at(i)->getRefOrigen() == vertDestino))
+			return tmpIncident->at(i);
+	return 0;
+}
+
+
+template<class E>void CGrafo<E>::rutaMin(E vertOrigen,E vertDestino)
+{
+	CVertice<E>*ptrOrigen = findVertice(vertOrigen);
+	CVertice<E>*ptrDestino = findVertice(vertDestino);
+	CVertice<E> *aux = ptrOrigen,*act;
+
+	if(ptrOrigen && ptrDestino)
+	{
+		aux->perm=true;
+		aux->vertOrigen();
+		stack<CVertice<E>*> vertices;
+
+		while(!ptrDestino->perm )
+		{
+			
+			vertices.push(aux);
+
+			aux=aux->menorIncidentPesos();
+			if(aux)
+				aux->perm=true;
+			else
+			{
+				vertices.pop();
+				aux=vertices.top();
+			}
+
+
+		}
+	}
+
+	ptrDestino->mostrarRuta();
+}
+
+template <class E> void CGrafo<E>::menos_vertices(E origen,E destino)
+{
+	
+	CGrafo<E> grafo=*this;
+	int *pesos;
+	pesos = new int[secAristas->size()];
+	pesos=cambiarPesos(secAristas);
+
+	CVertice<E>*ptrOrigen = findVertice(origen);
+	CVertice<E>*ptrDestino = findVertice(destino);
+	CVertice<E> *aux = ptrOrigen,*act;
+
+	if(ptrOrigen && ptrDestino)
+	{
+		aux->perm=true;
+		aux->vertOrigen();
+		stack<CVertice<E>*> vertices;
+		vertices.push(aux);
+		while(vertices.size()!=0)
+		{
+
+			aux=aux->menorIncidentPesosPerm(ptrDestino);
+			if(!aux)
+			{
+	
+				vertices.pop();
+				aux=vertices.top();
+				if (aux->getData() == ptrOrigen->getData())
+				{
+					ptrDestino->mostrarRuta();
+					*this = grafo;
+					//devolverPesos(pesos);
+					return;
+				}
+			}
+			else
+			{
+				vertices.push(aux);
+				if(aux )
+				{
+					aux->perm=true;
+				}
+				else
+				{
+					vertices.pop();
+					aux=vertices.top();
+				}
+				if(aux==ptrDestino )
+				{
+					vertices.pop();
+					aux=vertices.top();
+				}
+			}
+		}
+	}
+	//devolverPesos(pesos);
+	ptrDestino->mostrarRuta();
+	*this = grafo;
+}
+
+template <class E> int* CGrafo<E>::cambiarPesos(vector<CArista<E>*>* Aristas)
+{
+	int * pesos;
+	if (Aristas->size() == 0)
+		return pesos;
+	else
+	{
+		pesos = new int[Aristas->size()];
+		for (int i = 0; i<Aristas->size(); i++)
+		{
+			
+			pesos[i] = Aristas->at(i)->getPeso();
+			Aristas->at(i)->darPeso(1);
+		}
+	}
+	return pesos;
+}
+
+template <class E> void CGrafo<E>::devolverPesos(int* pesos)
+{
+	if (secAristas->size() == 0)
+		return ;
+	else
+	{
+		for (int i = 0; i<secAristas->size(); i++)
+		{
+
+			
+			secAristas->at(i)->darPeso(pesos[i]);
+		}
+	}
+}
+#endif
+********************list.h********************************************************************************************************
+#ifndef LIST_H
+#define LIST_H
+
+#include <iostream>
+using namespace std;
+
+
+template <class E> 
+class NodoLEG
+{
+private:
+	E dato;
+	NodoLEG<E> *siguiente;
+public:
+	NodoLEG(E dato, NodoLEG<E> *sig=NULL)
+	{
+		this->dato = dato;
+		this->siguiente = sig;
+	}
+	~NodoLEG( )
+	{
+		this->dato = 0;
+		this->siguiente = NULL; 
+	}
+	NodoLEG<E>* getSiguiente(){return siguiente;}
+	E getDato(){return dato;}
+	void setSiguiente(NodoLEG<E>* temp){siguiente=temp;}
+	void setDati(E obj){dato=obj;}
+};
+
+
+
+template<class X>
+class LEG
+{
+protected:
+	NodoLEG<X> *primero,*ultimo;
+	int tamanio;
+public:// El constructor crea la lista vacía
+	LEG()
+	{
+		primero = ultimo = NULL;
+		tamanio = 0;
+	}
+	void insertar(X);
+	void insertarEnFin(X);
+	void mostrar();
+	bool search(X);
+	bool eliminar(X);
+	bool eliminarFin(X);
+	friend ostream& operator<< <>(ostream&, LEG<X>& );
+	
+};
+
+
+template<class X> void LEG<X>::insertar(X obj)
+{
+	primero = new NodoLEG<X>(obj, primero);
+	if(ultimo==NULL)
+		ultimo=primero;
+	tamanio++;
+}
+
+template<class X> bool LEG<X>::search(X obj)
+{
+	NodoLEG<X>* aux;
+	aux=primero;
+	while(aux!=NULL && aux->getDato()!= obj)
+	{
+		aux=aux->getSiguiente();
+	}
+	if(aux!=NULL)
+		return true;
+	else 
+		return false;
+}
+
+template<class X> void LEG<X>::mostrar()
+{
+	NodoLEG<X> * temp;
+	temp=primero;
+	while(temp != NULL)
+	{
+		cout<<temp->getDato()<<endl;
+		temp=temp->getSiguiente();
+	}
+}
+
+
+template<class X>ostream & operator<< <>(ostream&o, LEG<X>& l )
+{
+	for(NodoLEG<X> *aux=l.primero;aux!=NULL;aux=aux->getSiguiente())
+		o<<aux->getDato() <<"\n";
+	return o;
+}
+
+
+
+template<class X> bool LEG<X>:: eliminar(X x)
+{
+	NodoLEG <X> *aux = primero, *ant =NULL;
+	while(aux!=NULL && aux->getDato() != x) 
+	{
+		ant=aux;
+		aux=aux->getSiguiente();
+		
+	}
+	if(aux == NULL)
+		return false;// Elemento no encontrado
+	if(ant == NULL)
+		primero =aux->getSiguiente();
+	else
+		ant->setSiguiente(aux->getSiguiente());
+	tamanio--;
+	delete aux;
+	return true;
+}
+
+
+template<class X>void LEG<X>::insertarEnFin(X x)
+{
+	//Coste constante
+	NodoLEG<X> *nuevo =new NodoLEG<X>(x);
+	if(ultimo !=NULL)
+		ultimo->setSiguiente(nuevo);
+	else
+		primero = nuevo;
+	ultimo = nuevo;
+	tamanio++;
+}
+
+template<class X>bool LEG<X>::eliminarFin(X x) 
+{
+	NodoLEG <X> *aux = primero, *ant =NULL;
+	while(aux!=NULL&&aux->getDato() != x) 
+	{
+		ant=aux;
+		aux=aux->getSiguiente();
+	}
+	if(aux==NULL)
+		return false;// No encontrado
+	if(ant==NULL)
+		primero =aux->getSiguiente();
+	else
+		ant->setSiguiente(ant->getSiguiente()) ;
+	if(aux->getSiguiente() ==NULL)
+		ultimo =ant;
+	delete aux;
+	tamanio--;
+	return true;
+}
+
+#endif
+
+********************main********************************************************************************************************
+
+#include"Grafo.h"
+void main()
+{
+	CGrafo<char> A;
+	
+
+	A.insertVertice('S');
+	A.insertVertice('U');
+	A.insertVertice('X');
+	A.insertVertice('V');
+	A.insertVertice('Y');
+	A.insertVertice('Z');
+	A.insertVertice('A');
+	A.insertVertice('B');
+	A.insertVertice('C');
+	A.insertVertice('D');
+
+
+	A.insertArista('U','X',1);
+	A.insertArista('S','Y',9);
+	A.insertArista('Y','D',8);
+	A.insertArista('D','V',7);
+	A.insertArista('V','A',1);
+	A.insertArista('V','X',3);
+	//A.insertArista('V','B',1);
+	A.insertArista('B','Z',2);
+	A.insertArista('X','Z',2);
+	A.insertArista('A','U',1);
+
+	//A.removeVertice(20);
+  //A.removeArista(30,20);
+	//A.removeArista(1,2);
+	
+	//A.rutaMin('S','Z');
+	A.menos_vertices('S','Z');
+
+	system ("pause");
+}
