@@ -1,0 +1,215 @@
+#ifndef QUEUEPRIORITY_H
+#define QUEUEPRIORITY_H
+
+#include <assert.h>
+#include <iostream>
+using namespace std;
+template<class E>
+class NodoPriority
+{
+	E data; 
+	int priority;
+	NodoPriority<E>* sig; //lista enlazada
+public:
+	NodoPriority();
+	~NodoPriority(){
+		this->data=0;
+		this->priority=0;
+		this->sig=0;
+	}
+	NodoPriority(E,int,NodoPriority<E>* = NULL);
+	E getData();
+	int getPriority();
+	void setPriority(int );
+	NodoPriority<E>* getNext();
+	void setSig(NodoPriority<E>*);
+	void setData(E);	
+
+};
+
+template <class E> int NodoPriority<E>::getPriority(){ return priority;}
+template <class E>void NodoPriority<E>::setPriority(int p){ priority = p;}
+template <class E> NodoPriority<E>::NodoPriority(E data,int priority,NodoPriority<E>*sig)
+{
+	this->data=data;
+	this-> priority= priority;
+	this -> sig= sig;
+}
+template <class E>
+NodoPriority<E>::NodoPriority()
+{
+	this->data=0;
+	this->priority= 0;
+	this->sig= NULL;
+}
+template <class E>
+E NodoPriority<E>::getData(){return data;}
+template <class E>
+NodoPriority<E>* NodoPriority<E>::getNext()
+{
+	return sig;
+}
+template <class E>
+void NodoPriority<E>::setData(E data)
+{
+	this->data=data;
+}
+template <class E>
+void NodoPriority<E>::setSig(NodoPriority* x)
+{
+	this->sig=x;
+}
+template <class E>
+class QueuePriority
+{
+protected:
+	NodoPriority<E>* queueRear;
+	NodoPriority<E>* queueFront;
+	int count;
+	int tamanio;
+public:
+	QueuePriority();
+//	void addQueue(E);
+	E front(); 
+	E back();
+	NodoPriority<E>* getqueueFront(){return queueFront;}
+	E deleteQueue();
+	bool isEmptyQueue(); 
+	void addQueue(E queueElement,int); 
+
+	friend ostream & operator<< <>(ostream&, QueuePriority<E>&);
+	
+	
+	void reordenar(E,int);
+};
+template<class E> void CGrafo<E>:: reordenar(E elem,int dis)
+{
+	E menor=0;
+		for(int i=0;i<secIncident->size();i++)
+		{			
+			if( auxVert > auxVertOrigen +secIncident->at(i)->getPeso())
+			{
+				auxVertDestino->darPeso(secIncident->at(i)->getPeso(),auxVertOrigen);
+				secIncident->at(i)->getRefDestino()->path=secIncident->at(i)->getRefOrigen();
+				
+			}
+			if(!menor || menor->getPeso() > secIncident->at(i)->getRefDestino()->getPeso()  )
+			{
+				if(!secIncident->at(i)->getRefDestino()->perm)
+					menor = secIncident->at(i)->getRefDestino();
+			}
+		}
+		return menor;
+}
+template<class E> QueuePriority<E>::QueuePriority(){
+	this->queueRear=this->queueFront=0;
+	this->count =0;
+}
+template<class E> E QueuePriority<E>::front()
+{
+	assert(queueFront);
+	E temp;
+	NodoPriority<E>* aux= queueFront;
+	NodoPriority<E>* auxAux=aux;
+	int minprio=aux->getPriority();
+	while(aux)
+	{
+			if(aux->getPriority() < minprio)
+			{
+				minprio=aux->getPriority();	
+				auxAux=aux;
+				
+			}			
+			aux=aux->getNext();
+	}
+	if(auxAux)	return auxAux->getData();
+	
+
+}
+template<class E> E QueuePriority<E>::back()
+{
+	assert(queueRear);
+	NodoPriority<E>* aux= queueRear;
+	int minprio=aux->getPriority();
+	NodoPriority<E>* auxAux=aux;
+	while(aux)
+	{
+			if(aux->getPriority() > minprio)
+			{
+				minprio=aux->getPriority();	
+				auxAux=aux;
+			}			
+			aux=aux->getNext();
+	}
+	return auxAux->getData();
+
+}
+template<class E> bool QueuePriority<E>::isEmptyQueue(){
+	return (!this->queueRear);
+}
+template<class E> E QueuePriority<E>::deleteQueue(){
+	E dataAux;
+	NodoPriority<E>* aux= queueFront;
+	if(aux){
+		dataAux=aux->getData();
+	}
+	if(!isEmptyQueue())
+	{
+		int minprio=aux->getPriority();
+		NodoPriority<E>* ant =NULL;
+		while(aux->getNext())
+		{
+			if(aux->getNext()->getPriority() < minprio)
+			{
+				minprio=aux->getNext()->getPriority();
+				ant=aux;
+			}			
+			aux=aux->getNext();
+		}
+		NodoPriority<E>* eli;
+		if(!ant) {eli=queueFront,
+			queueFront= queueFront->getNext();
+			if(!queueFront)
+				queueRear=0;
+		}
+		else
+		{
+			eli= ant->getNext();
+			ant->setSig(ant->getNext()->getNext());
+			if(!ant->getNext()) queueRear=ant;
+
+		}
+		dataAux=eli->getData();
+		delete eli;
+		
+	}
+	else
+		cout<<"Cannot delete from an empty queue"<<endl;
+	return dataAux;
+}
+template<class E> void QueuePriority<E>::addQueue(E newItem, int prio){
+	NodoPriority<E>* nuevo=new NodoPriority<E>(newItem,prio);
+
+	if(queueRear)
+		queueRear->setSig(nuevo);
+	queueRear= nuevo;
+	if(!queueFront)
+		queueFront=queueRear;
+	count++;
+}
+
+template <class E> 
+ostream &operator << <>(ostream &o, QueuePriority<E>&l){
+	NodoPriority<E>*aux=l.getqueueFront();
+	for(aux; aux != NULL;aux=aux->getNext()){
+		o<<aux->getData()<<" ("<<aux->getPriority()<<")"<<" , ";		
+	}
+	o<<"\n";
+	return o;
+}
+#endif
+
+/***╔══╦═╦╗╔═╦╗****╔══╦═╦╗╔═╦╗****╔══╦═╦╗╔═╦╗****╔══╦═╦╗╔═╦╗****╔══╦═╦╗╔═╦╗****╔══╦═╦╗╔═╦╗****╔══╦═╦╗╔═╦╗****╔══╦═╦╗╔═╦╗****╔══╦═╦╗╔═╦╗***/
+/***║║║║╦╣╚╣╔╣║****║║║║╦╣╚╣╔╣║****║║║║╦╣╚╣╔╣║****║║║║╦╣╚╣╔╣║****║║║║╦╣╚╣╔╣║****║║║║╦╣╚╣╔╣║****║║║║╦╣╚╣╔╣║****║║║║╦╣╚╣╔╣║****║║║║╦╣╚╣╔╣║***/
+/***╚╩╩╩═╩═╩╝╚╝****╚╩╩╩═╩═╩╝╚╝****╚╩╩╩═╩═╩╝╚╝****╚╩╩╩═╩═╩╝╚╝****╚╩╩╩═╩═╩╝╚╝****╚╩╩╩═╩═╩╝╚╝****╚╩╩╩═╩═╩╝╚╝****╚╩╩╩═╩═╩╝╚╝****╚╩╩╩═╩═╩╝╚╝***/
+
