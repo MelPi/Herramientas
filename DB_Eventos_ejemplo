@@ -1,0 +1,145 @@
+create database Evento;
+use Evento
+
+create table usuario(
+	id_usuario int primary key,
+	nombre varchar(15),
+	apellidos varchar(40),
+	email varchar(40)
+);
+create table actividades
+(
+	id_actividad int primary key not null,
+	id_evento int not null,
+	id_ponente int not null,
+	id_materiales int not null,
+	id_auditorio int not null,
+	id_ponencia int not null,
+	id_participante int not null,
+	fecha_actividad date,
+	descripcion varchar(50)
+);
+create table ponencia(
+	id_ponencia int primary key,
+	tema varchar(30),
+	fecha date,
+	hora time,
+	id_ponente int not null
+);
+create table evento(
+	id_evento int primary key,
+	nombre_evento varchar(18),
+	fecha_evento date
+);
+create table materiales(
+	id_materiales int primary key,
+	nombre_taller varchar(30),
+	detalle_taller varchar(30)
+);
+create table auditorio(
+	id_auditorio int primary key,
+	nombre_auditorio varchar(18),
+	localizacion varchar(40),
+	capacidad int
+);
+create table ponente(
+	id_ponente int primary key,
+	nombre_ponente varchar(30),
+	apellido_ponente varchar(30),
+	telefono varchar(15)
+);
+create table participante
+(
+	id_participante int primary key,
+	nombres varchar(20),
+	apellidos varchar(40),
+	telefono varchar(15),
+	id_inscripcion int
+);
+create table preinscripcion(
+	id_preinscripcion int primary key,
+	id_correo int
+);
+create table correo(
+	id_correo int primary key,
+	correo varchar(30)
+);
+create table inscripcion
+(
+	id_inscripcion int primary key,
+	id_preinscripcion int,
+	id_recibo int
+);
+create table recibo
+(
+	id_recibo int primary key,
+	fecha_pago date,
+	descripcion varchar(40),
+	nombres varchar(20),
+	apellidos varchar(30)
+);
+
+alter table actividades drop column id_participante ;
+alter table participante add id_actividad int not null;
+alter table actividad DROP fk_1
+--GO
+
+alter table actividades                          
+add constraint fk_1
+foreign key (id_auditorio)
+references  auditorio(id_auditorio);
+
+alter table actividades                          
+add constraint fk_2
+foreign key (id_materiales)
+references  materiales(id_materiales);
+
+alter table actividades
+add constraint fk_3
+foreign key (id_evento)
+references evento (id_evento);
+
+alter table actividades
+add constraint fk_4
+foreign key (id_ponente)
+references ponente (id_ponente);
+
+alter table actividades
+add constraint fk_5
+foreign key (id_ponencia)
+references ponencia (id_ponencia);
+
+alter table participante
+add constraint fk_6
+foreign key (id_inscripcion)
+references actividades (id_actividad);
+
+alter table participante
+add constraint fk_7
+foreign key (id_actividad)
+references actividades (id_actividad);
+
+alter table participante
+add constraint fk_8
+foreign key (id_inscripcion)
+references inscripcion (id_inscripcion);
+
+alter table recibo
+add constraint fk_9
+foreign key (id_recibo)
+references inscripcion (id_inscripcion);
+
+alter table preinscripcion
+add constraint fk_10
+foreign key (id_preinscripcion)
+references inscripcion (id_inscripcion);
+
+alter table participante
+add constraint fk_11
+foreign key (id_inscripcion)
+references inscripcion (id_inscripcion);
+
+alter table correo
+add constraint fk_12
+foreign key (id_correo)
+references preinscripcion (id_preinscripcion);
