@@ -1,0 +1,111 @@
+/***************************alumno.cpp**********************************************************************************************/
+#include <iostream>
+using namespace std;
+#include "fecha.h"
+#include "alumno.h"
+
+void Alumno::ingresoAlumno()
+{
+	char cadena[80];
+	int longitud = 0;
+	cout << "ingrese codigo  : ";
+	cin >> codigo;
+	cout << "ingrese nombre: ";
+	fflush(stdin);
+	gets(cadena);
+	longitud = strlen(cadena) + 1;
+	nombre = new char[longitud];
+	strcpy(nombre, cadena);
+	ingreso.ingresarFecha("fecha de ingreso de alumno");
+}
+void Alumno::mostraralumno()
+{
+	cout <<"codigo			: " << codigo << endl;
+	cout <<"nombre			: " << nombre << endl;
+	cout <<"fecha de ingreso: " ;
+	ingreso.mostrarFecha();
+	cout << endl;
+}
+/***************************alumno.h***************************************************************************************************/
+#ifndef ALUMNO_H
+#define ALUMNO_H
+
+#include "fecha.h"
+struct Alumno
+{
+	int codigo;
+	char *nombre;
+	Fecha ingreso;
+	void ingresoAlumno();
+	void mostraralumno();
+};
+#endif
+
+/******************************fecha.cpp************************************************************************************************/
+#include <iostream>
+using namespace std;
+#include "fecha.h"
+
+void Fecha::ingresarFecha(char *mensaje)
+{
+	int d, m, a;
+	puts(mensaje);
+	cout << "Ingresar una fecha valida: " << endl;
+	cout << "Ingresar dia: ";
+	cin >> d;
+	(d > 0 && d < 32)? dia = d:dia = 0;
+	cout << "Ingresar mes: ";
+	cin >> m;
+	(m > 0 && m < 13)? mes = m:mes = 0;
+	cout << "Ingresar anio: ";
+	cin >> a;
+	(a > 1961)? anio = a:anio = 0;
+}
+
+
+void Fecha::mostrarFecha()
+{
+	cout << "Fecha: " << dia << "/" 
+		 << mes << "/" << anio << endl;
+}
+
+/************************************fecha.h******************************************************************************************/
+#ifndef FECHA_H
+#define FECHA_H
+
+struct Fecha
+{
+	int dia;
+	int mes;
+	int anio;
+	void ingresarFecha(char*);
+	void mostrarFecha();
+};
+
+#endif
+
+/**************************************runAlumno.cpp***********************************************************************************/
+#include <iostream>
+using namespace std;
+#include "fecha.h"
+#include "alumno.h"
+
+int main()
+{
+	int numero = 0;
+	Alumno *salon;
+	cout << "ingres numero de alumnos: ";
+	cin >> numero;
+	salon = new Alumno[numero];
+	for (int i = 0; i < numero; i++)
+	{
+		salon[i].ingresoAlumno();
+		salon[i].mostraralumno();
+	}
+	system("pause");
+	return 0;
+}
+/***╔══╦═╦╗╔═╦╗****╔══╦═╦╗╔═╦╗****╔══╦═╦╗╔═╦╗****╔══╦═╦╗╔═╦╗****╔══╦═╦╗╔═╦╗****╔══╦═╦╗╔═╦╗****╔══╦═╦╗╔═╦╗****╔══╦═╦╗╔═╦╗****╔══╦═╦╗╔═╦╗***/
+/***║║║║╦╣╚╣╔╣║****║║║║╦╣╚╣╔╣║****║║║║╦╣╚╣╔╣║****║║║║╦╣╚╣╔╣║****║║║║╦╣╚╣╔╣║****║║║║╦╣╚╣╔╣║****║║║║╦╣╚╣╔╣║****║║║║╦╣╚╣╔╣║****║║║║╦╣╚╣╔╣║***/
+/***╚╩╩╩═╩═╩╝╚╝****╚╩╩╩═╩═╩╝╚╝****╚╩╩╩═╩═╩╝╚╝****╚╩╩╩═╩═╩╝╚╝****╚╩╩╩═╩═╩╝╚╝****╚╩╩╩═╩═╩╝╚╝****╚╩╩╩═╩═╩╝╚╝****╚╩╩╩═╩═╩╝╚╝****╚╩╩╩═╩═╩╝╚╝***/
+
