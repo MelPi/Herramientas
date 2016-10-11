@@ -1,0 +1,60 @@
+inicio:-pantalla(10),read(Valor),opciones2(Valor).
+opciones2(Valor):-Valor==1,pantalla(11);
+                 Valor==2,!.
+
+pantalla(10):-write('CLASIFICACION DE LOS ANIMALES'),nl,
+	      write('=========='),nl,
+	      write('1. Empezar'),nl,
+	      write('2. Salir'),nl,
+	      write('==========').
+
+
+
+pantalla(11):-write('¿ES VERTEBRADO? si/no'),nl,read(R),vertebrado(R).
+reinicio(R3):- R3== 'si' , inicio;
+               R3== 'no',!.
+
+vertebrado(R):-
+R== 'no', nl, write('¿PRESENTA EXOESQUELETO? si/no'),nl,read(R1),continuar_1_1(R1);
+R== 'si', nl, write('¿Pone huevos? si/no'),nl,read(RR1),huevos(RR1).
+
+continuar_1_1(R1):-
+	R1== 'no' , write('¿SON DIBRANQUIOS? si/no'),nl,read(R2),continuar_1_2(R2);
+        R1== 'si' , write('¿PUEDE VOLAR? si/no'),nl,read(R2),continuar_1_3(R2).
+
+continuar_1_2(R2):-
+R2== 'no' , write('EL ANIMAL ES : NAUTILUS'),nl,write('Desea volver a jugar si/no'),nl,read(R3), reinicio(R3);
+R2=='si', write('¿ES OCTOPODO? si/no'),nl,read(R4),continuar_1_4(R4).
+
+
+continuar_1_3(R2):-
+	R2=='no',write('¿ES VENENOSO? si/no'),read(R5),continuar_1_5(R5);
+	R2=='si',write('¿TIENE AGUIJON? si/no'),read(R5),continuar_1_6(R5).
+continuar_1_5(R5):-
+	R5=='no', write('EL ANIMAL ES: CANGREJO'),nl,write('Desea volver a jugar si/no'),nl,read(R3), reinicio(R3);
+	R5=='si',write('EL ANIMAL ES: ESCORPION'),nl,write('Desea volver a jugar si/no'),nl,read(R3), reinicio(R3).
+
+continuar_1_6(R5):-
+	R5=='no', write('EL ANIMAL ES: MARIPOSA'),nl,write('Desea volver a jugar si/no'),nl,read(R3), reinicio(R3);
+	R5=='si',write('EL ANIMAL ES: ABEJA'),nl,write('Desea volver a jugar si/no'),nl,read(R3), reinicio(R3).
+
+continuar_1_4(R4):-
+	R4=='no', write('EL ANIMAL ES: CALAMAR'),nl,write('Desea volver a jugar si/no'),nl,read(R3), reinicio(R3);
+	R4=='si',write('EL ANIMAL ES: PULPO'),nl,write('Desea volver a jugar si/no'),nl,read(R3), reinicio(R3).
+
+huevos(RR1):-RR1== 'si', nl, write('¿TIENE PLUMAS? si/no'),nl,read(RR2),plumas(RR2);
+	    RR1== 'no', nl, write('¿SON PLACENTADOS? si/no'),nl,read(RR2),placentados(RR2).
+
+plumas(RR2):-RR2== 'si', nl, write('¿PUEDE VOLAR? si/no'),nl,read(RR3),volar(RR3);
+	    RR2== 'no', nl, write('¿TIENE ESCAMAS? si/no'),nl,read(RR3),escamas(RR3).
+
+volar(RR3):-RR3== 'si', nl, write('EL ANIMAL ES: FLAMENCO'),nl,write('Desea volver a jugar si/no'),nl,read(V3), reinicio(V3);
+           RR3== 'no', nl, write('EL ANIMAL ES: AVESTRUZ'),nl,write('Desea volver a jugar si/no'),nl,read(V3), reinicio(V3).
+escamas(RR3):-RR3== 'si', nl, write('EL ANIMAL ES: SERPIENTE'),nl,write('Desea volver a jugar si/no'),nl,read(V3), reinicio(V3);
+           RR3== 'no', nl, write('EL ANIMAL ES: SAPO'),nl,write('Desea volver a jugar si/no'),nl,read(V3), reinicio(V3).
+
+placentados(RR2):- RR2== 'si', nl, write('¿ES CARNIVORO? si/no'),nl,read(RR4),carnivoro(RR4);
+		RR2== 'no', nl, write('EL ANIMAL ES: CANGURO'),nl,write('Desea volver a jugar si/no'),nl,read(V3), reinicio(V3).
+
+carnivoro(RR4):- RR4== 'si', nl, write('EL ANIMAL ES: TIGRE'),nl,write('Desea volver a jugar si/no'),nl,read(V3), reinicio(V3);
+		RR4== 'no', nl, write('EL ANIMAL ES: ELEFANTE'),nl,write('Desea volver a jugar si/no'),nl,read(V3), reinicio(V3).
