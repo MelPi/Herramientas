@@ -8,8 +8,6 @@ pantalla(10):-write('CLASIFICACION DE LOS ANIMALES'),nl,
 	      write('2. Salir'),nl,
 	      write('==========').
 
-
-
 pantalla(11):-write('¿ES VERTEBRADO? si/no'),nl,read(R),vertebrado(R).
 reinicio(R3):- R3== 'si' , inicio;
                R3== 'no',!.
@@ -58,3 +56,9 @@ placentados(RR2):- RR2== 'si', nl, write('¿ES CARNIVORO? si/no'),nl,read(RR4),c
 
 carnivoro(RR4):- RR4== 'si', nl, write('EL ANIMAL ES: TIGRE'),nl,write('Desea volver a jugar si/no'),nl,read(V3), reinicio(V3);
 		RR4== 'no', nl, write('EL ANIMAL ES: ELEFANTE'),nl,write('Desea volver a jugar si/no'),nl,read(V3), reinicio(V3).
+		
+%***╔══╦═╦╗╔═╦╗****╔══╦═╦╗╔═╦╗****╔══╦═╦╗╔═╦╗****╔══╦═╦╗╔═╦╗****╔══╦═╦╗╔═╦╗****╔══╦═╦╗╔═╦╗****╔══╦═╦╗╔═╦╗****╔══╦═╦╗╔═╦╗****╔══╦═╦╗╔═╦╗***/
+%***║║║║╦╣╚╣╔╣║****║║║║╦╣╚╣╔╣║****║║║║╦╣╚╣╔╣║****║║║║╦╣╚╣╔╣║****║║║║╦╣╚╣╔╣║****║║║║╦╣╚╣╔╣║****║║║║╦╣╚╣╔╣║****║║║║╦╣╚╣╔╣║****║║║║╦╣╚╣╔╣║***/
+%***╚╩╩╩═╩═╩╝╚╝****╚╩╩╩═╩═╩╝╚╝****╚╩╩╩═╩═╩╝╚╝****╚╩╩╩═╩═╩╝╚╝****╚╩╩╩═╩═╩╝╚╝****╚╩╩╩═╩═╩╝╚╝****╚╩╩╩═╩═╩╝╚╝****╚╩╩╩═╩═╩╝╚╝****╚╩╩╩═╩═╩╝╚╝***/
+
+
