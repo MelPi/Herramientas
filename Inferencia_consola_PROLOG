@@ -1,3 +1,52 @@
+%**************************************************************************************************
+%******************************** REGLAS DE PRODUCCION ********************************************
+%**************************************************************************************************
+SI PREGUNTA =" ¿ES VERTEBRADO?" Y RPTA="NO"
+        SI PREGUNTA="¿PRESENTAN EXOESQUELETO?" Y RPTA="NO"
+               SI PREGUNTA =" ¿SON DIBRANQUIOS'" Y RPTA="NO"
+                      ENTONCES RPTA="SUPONE: NAUTILUS"
+              SI PREGUNTA ="SON DIBRANQUIOS " Y RPTA="SI"
+                     SI PREGUNTA="¿ES OCTOPODO?"  Y RPTA="NO"
+                             ENTONCES RPTA: SUPONE: CALAMAR
+                    SI PREGUNTA="¿ES OCTOPODO?" Y RPTA= "SI"
+                            ENTONCES RPTA ="SUPONE:PULPO"
+          SI PREGUNTA="¿PRESENTAN EXOESQUELETO?" Y RPTA =SI"
+                 SI PREGUNTA="¿PUEDE VOLAR?" Y RPTA="NO"
+                        SI PREGUNTA="¿ES VENENOSO?" Y RPTA="NO"
+                               ENTONCES RPTA="SUPONE: CANGREJO"
+                       SI PREGUNTA="¿ES VENENOSO?" Y RPTA="SI"
+                              ENTONCES RPTA="SUPONE: ESCORPION"
+                 SI PREGUNTA="¿PUEDE VOLAR?" Y RPTA="SI"
+                         SI PREGUNTA="¿TIENE AGUIJON?" Y RPTA="NO"
+                              ENTONCES RPTA="SUPONE MARIPOSA"
+                         SI PREGUNTA="¿TIENE AGUIJON?" Y RPTA="SI"
+                              ENTONCES RPTA="SUPONE ABEJA"
+SI PREGUNTA =" ¿ES VERTEBRADO?" Y RPTA="SI"
+        SI PREGUNTA="¿PONE HUEVOS?" Y RPTA="NO"
+               SI PREGUNTA="¿SON PLACENTADOS?" Y RPTA="NO"
+                      ENTONCES RPTA="SUPONE CANGURO"
+               SI PREGUNTA="¿SON PLACENTADOS?" Y RPTA="SI"
+                       SI PREGUNTA="¿ES CARNIVORO?" Y RPTA="NO"
+                               ENTONCES RPTA="SUPONE: ELEFANTE"
+                       SI PREGUNTA="¿ES CARNIVORO?" Y RPTA="SI"
+                               ENTONCES RPTA="SUPONE: TIGRE"
+        SI PREGUNTA="¿PONE HUEVOS?" Y RPTA="SI"
+              SI PREGUNTA="¿TIENE PLUMAS?" Y RPTA="NO"
+                     SI PREGUNTA="¿TIENE ESCAMAS?" = "NO"
+                         ENTONCES RPTA="SUPONE SAPO"
+                    SI PREGUNTA="¿TIENE ESCAMAS?" = "SI"
+                         ENTONCES RPTA="SUPONE SERPIENTE"
+              SI PREGUNTA="¿TIENE PLUMAS?" Y RPTA="SI"
+                    SI PREGUNTA="¿PUEDE VOLAR?" Y RPTA="NO"
+                        ENTONCES RPTA="SUPONE AVESTRUZ"
+                    SI PREGUNTA="¿PUEDE VOLAR?" Y RPTA="SI"
+                        ENTONCES RPTA="SUPONE FLAMENCO"
+			
+			
+%*********************************************************************************************************
+%*********************************** EN PROLOG: **********************************************************
+%*********************************************************************************************************
+
 inicio:-pantalla(10),read(Valor),opciones2(Valor).
 opciones2(Valor):-Valor==1,pantalla(11);
                  Valor==2,!.
