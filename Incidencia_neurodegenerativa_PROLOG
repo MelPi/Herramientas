@@ -1,0 +1,123 @@
+
+inicio:-pantalla(10),read(Valor),opciones2(Valor).
+opciones2(Valor):-Valor==1,pantalla(11);
+                 Valor==2,!.
+
+pantalla(10):-write('CLASIFICACION DE LOS ANIMALES'),nl,
+	      write('=========='),nl,
+	      write('1. Empezar'),nl,
+	      write('2. Salir'),nl,
+	      write('==========').
+
+pantalla(11):-write('¿PRESENTA ALGUN PROBLEMA VISUAL? <<ceguera/ vision borrosa/vision doble/vision de luces>> si/no'),nl,read(R),continuar_0(R).
+reinicio(R3):- R3== 'si' , inicio;
+               R3== 'no',!.
+continuar_0(R):-
+    R=='no', nl, write('¿PRESENTA DESCOORDINACION EN SUS MOVIMIENTOS? si/no'),nl,read(R1),continuar_0_1(R1);
+    R=='si', nl, write('¿PRESENTA DEBILIDAD MUSCULAR O CANSANCIO? si/no'),nl,read(R1),continuar_1_1(R1).
+
+continuar_0_1(R1):-
+    R=='no', nl, write('¿PRESENTA MOVIMIENTOS ESPASMODICOS? si/no'),nl,read(R2),continuar_0_2(R2);
+    R=='si', nl, write('¿SIENTE QUE SUS MOVIMIENTOS SON MAS LENTOS? si/no'),nl,read(R2),continuar_0_3(R2).
+
+continuar_0_2(R2):-
+    R=='no', nl, write('¿SIENTE DOLOR DE CUELLO, ESPALDA MEDIA/BAJA? si/no'),nl,read(R4),continuar_0_2_1(R4);
+	R=='si', nl, write('¿PRESENTA CAMBIOS DE COMPORTAMIENTO? si/no'),nl,read(R4),continuar_0_2_2(R4).
+continuar_0_2_1(R4):-
+    R4== 'si', nl, write('USTED PODRIA PADECER: ESPONDILIOSIS'),nl,write('INICIAR NUEVAMENTE si/no'),nl,read(R3), reinicio(R3);
+    R4== 'no', nl, write('USTED NO PRESENTA NINGUNA ENFERMEDAD NEURODEGENERATIVA'),nl,write('INICIAR NUEVAMENTE si/no'),nl,read(R3), reinicio(R3).
+continuar_0_2_2(R4):-
+	R=='no', nl, write('¿PRESENTA ALGUNA ENFERMEDAD CARDIACA? si/no'),nl,read(R4),continuar_0_2_3(R4);
+	R=='si', nl, write('USTED PODRIA PADECER: LA ENFERMEDAD DE HUNTINGTON'),nl,write('INICIAR NUEVAMENTE si/no'),nl,read(R3), reinicio(R3).
+continuar_0_2_3(R4):-
+	R=='no', nl, write('USTED NO PRESENTA NINGUNA ENFERMEDAD NEURODEGENERATIVA'),nl,write('INICIAR NUEVAMENTE si/no'),nl,read(R3), reinicio(R3);
+	R=='si', nl, write('USTED PODRIA PADECER: ATAXIA DE FRIEDREICH'),nl,write('INICIAR NUEVAMENTE si/no'),nl,read(R3), reinicio(R3). 
+continuar_0_3(R2):-
+    R=='no', nl, write('USTED NO PRESENTA NINGUNA ENFERMEDAD NEURODEGENERATIVA'),nl,write('INICIAR NUEVAMENTE si/no'),nl,read(R3), reinicio(R3);
+    R=='si', nl, write('¿PRESENTA TEMBLORES? si/no'),nl,read(R5),continuar_0_3_1(R5).
+continuar_0_3_1(R5):-
+    R=='no', nl, write('USTED NO PRESENTA NINGUNA ENFERMEDAD NEURODEGENERATIVA'),nl,write('INICIAR NUEVAMENTE si/no'),nl,read(R3), reinicio(R3);
+	R=='si', nl, write('USTED PODRIA PADECER: PARKINSON'),nl,write('INICIAR NUEVAMENTE si/no'),nl,read(R3), reinicio(R3).
+   
+
+continuar_1_1(R1):-
+    R=='no', nl, write('USTED NO PRESENTA NINGUNA ENFERMEDAD NEURODEGENERATIVA'),nl,write('INICIAR NUEVAMENTE si/no'),nl,read(R3), reinicio(R3); 
+    R=='si', nl, write('¿PRESENTA CONSTANTES CAMBIOS DE HUMOR? si/no'),nl,read(R2),continuar_1_2(R2).
+continuar_1_2(R2):-
+    R=='no', nl, write('¿SIENTE SU CUERPO MAS RIGIDO? si/no'),nl,read(R4),continuar_1_2_1(R4);
+	R=='si', nl, write('¿PRESENTA DEPRESION O ANSIEDAD? si/no'),nl,read(R4),continuar_1_2_2(R4).
+continuar_1_2_1(R4):-
+    R=='no', nl, write('¿PRESENTA CONVULSIONES? si/no'),nl,read(R4),continuar_1_2_1_1(R4);
+	R=='si', nl, write('¿PRESENTA PERDIDA DE SENSIBILIDAD? si/no'),nl,read(R4),continuar_1_2_2_1(R4).
+continuar_1_2_1_1(R4):-
+    R=='no', nl, write('USTED NO PRESENTA NINGUNA ENFERMEDAD NEURODEGENERATIVA'),nl,write('INICIAR NUEVAMENTE si/no'),nl,read(R3), reinicio(R3);
+	R=='si', nl, write('¿PRESENTA ANSIEDAD O DEPRESION? si/no'),nl,read(R4),continuar_1_2_2_1_2(R4).
+continuar_1_2_2_1_2(R4):-
+    R=='no', nl, write('USTED PODRIA PADECER: ENFERMEDAD DE LAFORA'),nl,write('INICIAR NUEVAMENTE si/no'),nl,read(R3), reinicio(R3);
+	R=='si', nl, write('USTED PODRIA PADECER: EPILEPSIA MIOCLONICA'),nl,write('INICIAR NUEVAMENTE si/no'),nl,read(R3), reinicio(R3). 
+continuar_1_2_2_1(R4):-
+    R=='no', nl,  write('USTED NO PRESENTA NINGUNA ENFERMEDAD NEURODEGENERATIVA'),nl,write('INICIAR NUEVAMENTE si/no'),nl,read(R3), reinicio(R3);
+	R=='si', nl, write('¿PRESENTA DESEQUILIBRIO? si/no'),nl,read(R4),continuar_1_2_2_3(R4).
+continuar_1_2_2_3(R4):-
+    R=='no', nl, write('USTED PODRIA PADECER: ENFERMEDAD DE DEVIC'),nl,write('INICIAR NUEVAMENTE si/no'),nl,read(R3), reinicio(R3);
+	R=='si', nl, write('¿PRESENTA CAIDAS O DESCOORDINACION EN SUS MOVIMIENTOS? si/no'),nl,read(R4),continuar_1_2_2_3_1(R4).
+continuar_1_2_2_3_1(R4):- 
+	R=='no', nl, write('USTED NO PRESENTA NINGUNA ENFERMEDAD NEURODEGENERATIVA'),nl,write('INICIAR NUEVAMENTE si/no'),nl,read(R3), reinicio(R3);
+	R=='si', nl, write('USTED PODRIA PADECER: ESCLEROSIS LATERAL AMIOTROFICA'),nl,write('INICIAR NUEVAMENTE si/no'),nl,read(R3), reinicio(R3).
+continuar_1_2_2(R4):-
+    R=='no', nl, write('¿PRESENTA DESCOORDINACION? si/no'),nl,read(R4),continuar_1_2_2_9(R4);
+	R=='si', nl, write('¿SUFRIO ALGUNA CRISIS CONVULSIVA ? si/no'),nl,read(R4),continuar_1_2_2_8(R4).
+
+continuar_1_2_2_9(R4):-
+    R=='no', nl, write('¿PRESENTA CONVULSIONES? si/no'),nl,read(R4),continuar_1_2_9_1(R4);
+	R=='si', nl, write('¿PRESENTA ADORMECIMIENTO, CALAMBRES, CONTRACCION MUSCULAR? si/no'),nl,read(R4),continuar_1_2_2_9_2(R4).
+continuar_1_2_9_1(R4):-
+	R=='no', nl,  write('USTED NO PRESENTA NINGUNA ENFERMEDAD NEURODEGENERATIVA'),nl,write('INICIAR NUEVAMENTE si/no'),nl,read(R3), reinicio(R3);
+	R=='si', nl, write('¿PRESENTA DISFACIA O ALGUN TRANSTORNO DE ALIMENTACION? si/no'),nl,read(R4),continuar_1_2_2_9_1_1(R4).
+continuar_1_2_2_9_1_1(R4):-
+    R=='no', nl, write('USTED NO PRESENTA NINGUNA ENFERMEDAD NEURODEGENERATIVA'),nl,write('INICIAR NUEVAMENTE si/no'),nl,read(R3), reinicio(R3);
+	R=='si', nl, write('USTED PODRIA PADECER: ENFERMEDAD DE CANAVAN'),nl,write('INICIAR NUEVAMENTE si/no'),nl,read(R3), reinicio(R3).
+continuar_1_2_2_9_2(R4):- 
+    R=='no', nl, write('¿PRESENTA DELIRIOS? si/no'),nl,read(R4),continuar_1_2_2_9_9(R4);
+	R=='si', nl, write('¿PRESENTA PERDIDA DE REFLEJOS? si/no'),nl,read(R4),continuar_1_2_2_9_8(R4).
+continuar_1_2_2_9_9(R4):-
+    R=='no', nl,write('USTED NO PRESENTA NINGUNA ENFERMEDAD NEURODEGENERATIVA'),nl,write('INICIAR NUEVAMENTE si/no'),nl,read(R3), reinicio(R3);
+    R=='si', nl, write('¿SE LE HACE COMPLICADO RECORDAR SUCESOS? si/no'),nl,read(R4),continuar_1_2_2_9_9_1(R4).
+continuar_1_2_2_9_9_1(R4):-
+    R=='no', nl,write('USTED NO PRESENTA NINGUNA ENFERMEDAD NEURODEGENERATIVA'),nl,write('INICIAR NUEVAMENTE si/no'),nl,read(R3), reinicio(R3);
+    R=='si', nl,write('USTED PODRIA PADECER: ALZHEIMER'),nl,write('INICIAR NUEVAMENTE si/no'),nl,read(R3), reinicio(R3).
+continuar_1_2_2_9_8(R4):-
+    R=='no', nl,write('USTED NO PRESENTA NINGUNA ENFERMEDAD NEURODEGENERATIVA'),nl,write('INICIAR NUEVAMENTE si/no'),nl,read(R3), reinicio(R3);
+    R=='si', nl, write('¿PRESENTA DISFAGIA? si/no'),nl,read(R4),continuar_1_2_2_9_8_9(R4).
+continuar_1_2_2_9_8_9(R4):-
+    R=='no', nl,write('USTED NO PRESENTA NINGUNA ENFERMEDAD NEURODEGENERATIVA'),nl,write('INICIAR NUEVAMENTE si/no'),nl,read(R3), reinicio(R3);
+    R=='si', nl,write('USTED PODRIA PADECER: SINDROME DE GUILTRAIN BARRE'),nl,write('INICIAR NUEVAMENTE si/no'),nl,read(R3), reinicio(R3).
+
+continuar_1_2_2_8(R4):-
+	R=='no', nl, write('¿PRESENTA DELIRIOS O ALUCINACIONES? si/no'),nl,read(R4),continuar_1_2_2_8_1(R4);
+	R=='si', nl, write('¿PRESENTA DESCOORDINACION EN SUS MIEMBROS MOTORES? si/no'),nl,read(R4),continuar_1_2_2_8_2(R4).
+continuar_1_2_2_8_1(R4):-
+    R=='no', nl,write('USTED NO PRESENTA NINGUNA ENFERMEDAD NEURODEGENERATIVA'),nl,write('INICIAR NUEVAMENTE si/no'),nl,read(R3), reinicio(R3);
+    R=='si', nl, write('¿PRESENTA DISFAGIA O ALGUN TRANSTORNO DE ALIMENTACION? si/no'),nl,read(R4),continuar_1_2_2_8_1_9(R4).
+continuar_1_2_2_8_1_9(R4):-
+    R=='no', nl,write('USTED NO PRESENTA NINGUNA ENFERMEDAD NEURODEGENERATIVA'),nl,write('INICIAR NUEVAMENTE si/no'),nl,read(R3), reinicio(R3);
+    R=='si', nl, write('¿SIENTE QUE SUS REFLEJOS DISMINUYERON? si/no'),nl,read(R4),continuar_1_2_2_8_1_9_9(R4).
+continuar_1_2_2_8_1_9_9(R4):-
+	R=='no', nl,write('USTED NO PRESENTA NINGUNA ENFERMEDAD NEURODEGENERATIVA'),nl,write('INICIAR NUEVAMENTE si/no'),nl,read(R3), reinicio(R3);
+    R=='si', nl, write('¿PRESENTA DESCOORDINACION EN SUS MOVIMIENTOS? si/no'),nl,read(R4),continuar_1_2_2_8_1_9_9_9(R4).
+continuar_1_2_2_8_1_9_9_9(R4):-
+	R=='no', nl,write('USTED NO PRESENTA NINGUNA ENFERMEDAD NEURODEGENERATIVA'),nl,write('INICIAR NUEVAMENTE si/no'),nl,read(R3), reinicio(R3);
+    R=='si', nl,write('USTED PODRIA PADECER: ENCEFALOPATIA DE WERNICKLE Y SINDROME DE KORSAKOFF'),nl,write('INICIAR NUEVAMENTE si/no'),nl,read(R3), reinicio(R3).
+
+continuar_1_2_2_8_2(R4):-
+    R=='no', nl,write('USTED NO PRESENTA NINGUNA ENFERMEDAD NEURODEGENERATIVA'),nl,write('INICIAR NUEVAMENTE si/no'),nl,read(R3), reinicio(R3);
+    R=='si', nl, write('¿SUFRIO ALGUN DESMAYO O PERDIDA DE CONOCIMIENTO? si/no'),nl,read(R4),continuar_1_2_2_8_2_1(R4).
+continuar_1_2_2_8_2_1(R4):-
+    R=='no', nl, write('¿PRESENTA RIGIDEZ? si/no'),nl,read(R4),continuar_1_2_2_8_2_1_9(R4).
+	R=='si', nl,write('USTED PODRIA PADECER: EPILEPSIA'),nl,write('INICIAR NUEVAMENTE si/no'),nl,read(R3), reinicio(R3).
+continuar_1_2_2_8_2_1_9(R4):-
+    R=='no', nl,write('USTED NO PRESENTA NINGUNA ENFERMEDAD NEURODEGENERATIVA'),nl,write('INICIAR NUEVAMENTE si/no'),nl,read(R3), reinicio(R3);
+    R=='si', nl,write('USTED PODRIA PADECER: ENFERMEDAD DE CREUTZELD-JAKOB'),nl,write('INICIAR NUEVAMENTE si/no'),nl,read(R3), reinicio(R3).
+
+    
+    
