@@ -1,0 +1,79 @@
+#include<stdio.h>
+#include<pthread.h>
+#include<stdlib.h>
+#include<unistd.h>
+
+pthread_mutex_t s1;
+pthread_mutex_t s2;
+pthread_mutex_t s3;
+int contador = 0;
+
+void *funcion01(void *arg) {
+	while (1){
+		pthread_mutex_lock(&s2);
+		if (contador != 0){
+			for (int i = 0; i < contador; i++)
+				printf("o");
+			printf("\n");
+			fflush(stdout);
+		
+		}
+		else break;
+		contador--;
+		pthread_mutex_unlock(&s3);
+	}
+	exit(0);
+	//return NULL;
+}
+
+void *funcion02(void *arg) {
+	while (1){
+		pthread_mutex_lock(&s3);
+		if (contador != 0){
+			for (int i = 0; i < contador; i++)
+				printf("+");
+			printf("\n");
+			fflush(stdout);
+		
+		}
+		else break;
+		contador--;
+		pthread_mutex_unlock(&s1);
+	}
+	exit(0);
+	//return NULL;
+}
+
+int main() {
+	printf("Ingrese: ");
+	scanf("%d", &contador);
+	pthread_mutex_init(&s1,NULL);
+	pthread_mutex_init(&s2,NULL);
+	pthread_mutex_init(&s3,NULL);
+	pthread_mutex_lock(&s2);
+	pthread_mutex_lock(&s3);
+	pthread_t mihilo01, mihilo02;
+	if (pthread_create(&mihilo01,NULL,funcion01,NULL)) {
+		printf("Error creando el hilo.");
+		abort();
+	}
+	if (pthread_create(&mihilo02,NULL,funcion02,NULL)) {
+		printf("Error creando el hilo.");
+		abort();
+	}
+	while (1){
+		pthread_mutex_lock(&s1);
+		if (contador != 0){
+			for (int i = 0; i < contador; i++)
+				printf("x");
+			printf("\n");
+			fflush(stdout);
+		
+		}
+		else break;
+		contador--;
+		pthread_mutex_unlock(&s2);
+	}
+	exit(0);
+	//return NULL;
+}
