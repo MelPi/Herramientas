@@ -1,0 +1,76 @@
+
+#include<stdio.h>
+#include<pthread.h>
+#include<stdlib.h>
+#include<unistd.h>
+
+pthread_mutex_t semaforo1; // creacion semaforos
+pthread_mutex_t semaforo2;
+pthread_mutex_t semaforo3;
+int contador = 20;
+
+void *funcion01(void *arg) {
+	while (true){
+		pthread_mutex_lock(&semaforo2);
+		while (contador != 0){
+			for (int i = 0; i < contador; i++)
+				printf("o");
+			printf("\n");
+			fflush(stdout); //vaciamos el buffer
+			break;
+		}
+		contador--;
+		pthread_mutex_unlock(&semaforo3);
+	}
+	return NULL;
+}
+
+void *funcion02(void *arg) {
+	while (true){
+		pthread_mutex_lock(&semaforo3);
+		while (contador != 0){
+			for (int i = 0; i < contador; i++)
+				printf("+");
+			printf("\n");
+			fflush(stdout); //vaciamos el buffer
+			break;
+		}
+		
+		contador--;	
+		pthread_mutex_unlock(&semaforo1);
+	}
+	return NULL;
+	
+}
+
+int main() {
+	
+	pthread_mutex_init(&semaforo1, NULL);
+	pthread_mutex_init(&semaforo2, NULL);
+	pthread_mutex_init(&semaforo3, NULL);
+	pthread_mutex_lock(&semaforo2);
+	pthread_mutex_lock(&semaforo3);
+	pthread_t mihilo01, mihilo02;
+	if (pthread_create(&mihilo01,NULL,funcion01,NULL)) {
+		printf("Error creando el hilo.");
+		abort();
+	}
+	if (pthread_create(&mihilo02,NULL,funcion02,NULL)) {
+		printf("Error creando el hilo.");
+		abort();
+	}
+	while (true){
+		pthread_mutex_lock(&semaforo1);
+		while (contador != 0){
+			for (int i = 0; i < contador; i++)
+				printf("x");
+			printf("\n");
+			fflush(stdout); //vaciamos el buffer
+			break;
+		}
+		
+		contador--;
+		pthread_mutex_unlock(&semaforo2);
+	}
+	return NULL;
+}
