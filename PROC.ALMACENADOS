@@ -1,0 +1,95 @@
+-- Function: public.p_s01mper_1(text)
+
+-- DROP FUNCTION public.p_s01mper_1(text);
+
+CREATE OR REPLACE FUNCTION public.p_s01mper_1(text) RETURNS text AS
+$BODY$
+DECLARE
+
+   -- PROCEDIMIENTO QUE REGISTRA UNA PERSONA
+   p_cData  ALIAS FOR $1;
+   lcData   JSON;
+   lcNroDni   VARCHAR(15)  NOT NULL := '';
+   lcNombre VARCHAR(50)  NOT NULL := '';
+   lcApellido VARCHAR(50) NOT NULL := '';
+   lcEmail VARCHAR(50)  NOT NULL := '';
+   lcNivel CHARACTER(1)  NOT NULL := '';
+BEGIN
+   BEGIN
+      lcData := p_cData::JSON;
+   EXCEPTION WHEN OTHERS THEN
+      RETURN '{"ERROR": "PARAMETRO NO ES  JSON"}';
+   END;
+   BEGIN
+      lcNroDni := lcData->>'CNRODNI';
+      lcNombre   := lcData->>'CNOMBRE';
+      lcApellido := lcData->>'CAPELLIDO';
+      lcEmail := lcData->>'CEMAIL';
+      lcNivel := lcData->>'CNIVEL';
+   EXCEPTION WHEN OTHERS THEN
+      RETURN '{"ERROR": "DETALLE DE PARAMETROS INVALIDO"}';
+   END;
+   INSERT INTO S01MPER (cNroDni, cNombre, cApellido, cEmail, cNivel) VALUES 
+          (lcNroDni, lcNombre, lcApellido, lcEmail, lcNivel);
+   RETURN '{"OK": "OK"}';
+END
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION public.p_s01mper_1(text)
+  OWNER TO postgres;
+
+
+-- Function: public.p_s01mhongo_1(text)
+
+-- DROP FUNCTION public.p_s01mhongo_1(text);
+
+CREATE OR REPLACE FUNCTION public.p_s01mhongo_1(text) RETURNS text AS
+$BODY$
+DECLARE
+   -- PROCEDIMIENTO QUE REGISTRA UN HONGO
+   p_cData  ALIAS FOR $1;
+   lcData   JSON;
+   lcCodHongo   INTEGER  NOT NULL;
+   lcEspecie    VARCHAR(30)  NOT NULL := '';
+   lcDescri     VARCHAR(100) NOT NULL := '';
+   lcCodMol     CHARACTER(10)  NOT NULL := '';
+   lcNomem      VARCHAR(50)  NOT NULL := '';
+   ldIngreso    DATE  NOT NULL;
+   lcNroDni     VARCHAR(15)  NOT NULL := '';
+   lcCodDivi    INTEGER  NOT NULL;
+   lcCodClas    INTEGER  NOT NULL;
+   lcCodOrd     INTEGER NOT NULL;
+   lcCodFam     INTEGER  NOT NULL;
+   lcCodFact    INTEGER  NOT NULL;
+BEGIN
+   BEGIN
+      lcData := p_cData::JSON;
+   EXCEPTION WHEN OTHERS THEN
+      RETURN '{"ERROR": "PARAMETRO NO ES JSON"}';
+   END;
+   BEGIN
+      lcCodHongo := lcData->>'CCODHONGO';
+      lcEspecie   := lcData->>'CESPECIE';
+      lcDescri := lcData->>'CDESCRI';
+      lcCodMol := lcData->>'CCODMOL';
+      lcNomem := lcData->>'CNOMEM';
+      ldIngreso := lcData->>'DINGRESO';
+      lcNroDni := lcData->>'CNRODNI';
+      lcCodDivi := lcData->>'CCODDIVI';
+      lcCodClas := lcData->>'CCODCLAS';
+      lcCodOrd   := lcData->>'CCODORD';
+      lcCodFam := lcData->>'CCODFAM';
+      lcCodFact := lcData->>'CCODFACT';
+   EXCEPTION WHEN OTHERS THEN
+      RETURN '{"ERROR": "DETALLE DE PARAMETROS INVALIDO"}';
+   END;
+   INSERT INTO S01MHONGO (cCodHongo, cEspecie, cDescri, cCodMol, cNomem, dIngreso, cNroDni, cCodDivi, cCodClas, cCodOrd, cCodFam, cCodFact) VALUES 
+          (lcCodHongo,lcEspecie,lcDescri, lcCodMol, lcNomem, ldIngreso, lcNroDni, lcCodDivi, lcCodClas, lcCodOrd, lcCodFam, lcCodFact);
+   RETURN '{"OK": "OK"}';
+END
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION public.p_s01mhongo_1(text)
+  OWNER TO postgres;
